@@ -1,4 +1,19 @@
-library(twitteR)
+######################################################
+#     											 
+#   Title: grazwahl2012.R
+#   Description: Analyse und Visualisierung der 
+#                Grazer Gemeinderatswahlen 2012
+#													 
+#													 
+#   Author: Stefan Kasberger
+#   Date: 26.11.2012
+#   Version: 1.0
+#	  Language: 2.15.2
+#   Software: 0.96.330
+#   License: FreeBSD (2-clause BSD)
+#   												 
+######################################################
+
 
 # read in files Graz
 graz_grw2003_bezerg    <- read.csv("raw/Graz/2003_grw_sprengelbezerg.csv", header = TRUE, sep = ";", encoding = "latin3") # encoding + columns
@@ -20,15 +35,6 @@ stmk_    <- read.csv("raw/Steiermark/.csv", header = TRUE, sep = ";", encoding =
 
 # read in files Oesterreich
 aut_    <- read.csv("raw/Oesterreich/.csv", header = TRUE, sep = ";", encoding = "latin3")
-
-# Twitter
-# searchTwitter(’charlie sheen’, since=’2011-03-01’, until=’2011-03-02’)
-grazwahl <- searchTwitter("#grazwahl", n=2000)
-graz <- searchTwitter("#graz", n=2000)
-graz12 <- searchTwitter("#graz12", n=2000)
-graz2012 <- searchTwitter("#graz2012", n=2000)
-grw12 <- searchTwitter("#grw12", n=2000)
-grazwaehlt <- searchTwitter("#grazwaehlt", n=2000)
 
 
 # Test
