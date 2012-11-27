@@ -17,10 +17,12 @@
 
 library(twitteR)
 
-# searchTwitter(’charlie sheen’, since=’2011-03-01’, until=’2011-03-02’)
+# get Twitter data of different keywords
 grazwahl <- searchTwitter("#grazwahl", n=2000)
 graz <- searchTwitter("#graz", n=2000)
 graz12 <- searchTwitter("#graz12", n=2000)
 graz2012 <- searchTwitter("#graz2012", n=2000)
 grw12 <- searchTwitter("#grw12", n=2000)
 grazwaehlt <- searchTwitter("#grazwaehlt", n=2000)
+
+
