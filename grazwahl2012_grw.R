@@ -20,6 +20,8 @@ graz_grw2003_bez <- read.csv2("raw/Graz/2003_grw_sprengelbezerg.csv", fileEncodi
 graz_grw2003_spr <- read.csv2("raw/Graz/2003_grw_sprengelerg.csv", fileEncoding = "iso-8859-1")
 graz_grw2008_bez <- read.csv2("raw/Graz/2008_grw_sprengelbezerg.csv", fileEncoding = "iso-8859-1")
 graz_grw2008_spr <- read.csv2("raw/Graz/2008_grw_sprengelerg.csv", fileEncoding = "iso-8859-1")
+graz_grw2012_bez <- read.csv2("raw/Graz/GRW2012_Sprengelbezerg.csv", fileEncoding = "iso-8859-1")
+graz_grw2012_spr <- read.csv2("raw/Graz/GRW2012_Sprengelerg.csv", fileEncoding = "iso-8859-1")
 
 # init variables
 
