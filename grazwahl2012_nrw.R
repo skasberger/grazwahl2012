@@ -1,6 +1,6 @@
 ######################################################
 #     											 
-#   Title: grazwahl2012_elections.R
+#   Title: grazwahl2012_nrw.R
 #   Description: Analyse und Visualisierung der 
 #                Nationalratswahlen in Österreich
 #													 

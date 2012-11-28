@@ -1,6 +1,6 @@
 ######################################################
 #     											 
-#   Title: grazwahl2012_elections.R
+#   Title: grazwahl2012_ltw.R
 #   Description: Analyse und Visualisierung der 
 #                Landtagswahlen in der Steiermark
 #													 
