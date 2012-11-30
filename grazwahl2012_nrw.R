@@ -15,14 +15,6 @@
 ######################################################
 
 
-# read in files
-graz_nrw2006_bez <- read.csv2("raw/Graz/2006_nrw_sprengelbezerg.csv", fileEncoding = "iso-8859-1")
-graz_nrw2006_spr <- read.csv2("raw/Graz/2006_nrw_sprengelerg.csv", fileEncoding = "iso-8859-1")
-graz_nrw2008_bez <- read.csv2("raw/Graz/2008_nrw_sprengelbezerg.csv", fileEncoding = "iso-8859-1")
-graz_nrw2008_spr <- read.csv2("raw/Graz/2008_nrw_sprengelerg.csv", fileEncoding = "iso-8859-1")
-
-# init variables
-
 # VISUALISIERUNG GEMEINDERATSWAHLEN
 data <- graz_grw2003_bez
 partycolors <- list(c("FPÖ", "GRÜNE", "GVP", "KPÖ", "LIF", "RWA", "SPÖ", "ÖVP"), c("blue", "green", "yellow", "red", "cyan", "brown", "red", "black"))
