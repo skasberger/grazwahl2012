@@ -9,7 +9,7 @@
 #   Date: 02.12.2012
 #   Version: 1.0
 #	  Language: 2.15.2
-#   Software: 0.96.330
+#   Software: RStudio 0.97.311
 #   License: FreeBSD (2-clause BSD)
 #   												 
 ######################################################
