@@ -12,10 +12,8 @@
 #   												 
 ######################################################
 
-#---
 ####  INFORMATION  ####
-#---
-#
+
 ## DICTIONARY
 #
 # Sprengel = parish
@@ -23,242 +21,259 @@
 # berechtigte WählerInnen = authorized voters
 # Wahlbeteiligung = voters participation
 
-#---
+
+
 ####  INITIALIZE  ####
-#---
+
 
 rm(list=ls())
 
-# Load Functions
+# init libraries
+library(RJSONIO)
+library(stringr)
+
+# load functions
 source("functions.R")
 
-# Constants
-nameDistricts <- (c("Innere Stadt", "St. Leonhard", "Geidorf", "Lend", "Gries", 
+# set city data
+city <- list()
+environment <- list()
+
+city[["nameDistricts"]] <-c("Innere Stadt", "St. Leonhard", "Geidorf", "Lend", "Gries", 
                     "Jakomini", "Liebenau", "St. Peter", "Waltendorf", "Ries", "Mariatrost", 
-                    "Andritz", "Gösting", "Eggenberg", "Wetzelsdorf", "Straßgang", "Puntigam"))
-numDistricts <- length(nameDistricts)
-numVotDistricts <- numDistricts + 1
-numberParties <- 11L
-eleData <- list(numDistricts, numVotDistricts, numberParties)
-names(eleData) <- c("numDistricts", "numVotDistricts", "numberParties")
-rm(numDistricts, numVotDistricts, numberParties)
-  
-workDir <- getwd()
-folderRaw <- paste0(workDir, "/data/raw/grw2012")
-folderSpatialRaw <- paste0(workDir, "/data/raw/spatial")
+                    "Andritz", "Gösting", "Eggenberg", "Wetzelsdorf", "Straßgang", "Puntigam")
+city[["numDistricts"]] <- length(city[["nameDistricts"]])
+city[["numParties"]] <- 11L
 
-# Column Names
-allVotesAbs <- "stimmen_abs"
-validVotesAbs <- "stimmen_gueltig_abs"
-validVotesRel <- "stimmen_gueltig_rel"
-unvalidVotesAbs <- "stimmen_ungueltig_abs"
-unvalidVotesRel <- "stimmen_ungueltig_rel"
-authVotersAbs <- "wahlber_alle_abs"
-authFemaleVotersAbs <- "wahlber_Frauen_abs"
-authFemaleVotersRel <- "wahlber_Frauen_rel"
-authMaleVotersAbs <- "wahlber_Maenner_abs"
-authMaleVotersRel <- "wahlber_Maenner_rel"
-listplace <- "Listenplatz"
-district <- "bezirk"
-parish <- "sprengel"
-parishDistrict <- "bezirk_sprengel"
-partyShortname <- "partei_kuerzel"
-partyName <- "parteiname"
-votes <- "stimmen"
-colNames <- list(allVotesAbs, validVotesAbs, validVotesRel, unvalidVotesAbs, unvalidVotesRel, 
-                 authVotersAbs, authMaleVotersRel, authMaleVotersAbs, authFemaleVotersRel, authFemaleVotersAbs,
-                 listplace, district, parish, parishDistrict, partyName, partyShortname, votes)
-rm(allVotesAbs, validVotesAbs, validVotesRel, unvalidVotesAbs, unvalidVotesRel, 
-     authVotersAbs, authMaleVotersRel, authMaleVotersAbs, authFemaleVotersRel, authFemaleVotersAbs,
-     listplace, district, parish, parishDistrict, partyName, partyShortname, votes)
+# set environment data
+environment[["workDir"]] <- getwd()
+environment[["folderData"]] <- paste0(environment[["workDir"]], "/data/")
+environment[["folderDataGRWG12"]] <- paste0(environment[["workDir"]], "/data/grw2012/")
+environment[["folderDataRaw"]] <- paste0(environment[["workDir"]], "/data/raw/grw2012/")
+environment[["folderDataSpatialRaw"]] <- paste0(environment[["workDir"]], "/data/raw/spatial/")
+environment[["folderDataJSON"]] <- paste0(environment[["workDir"]], "/data/json/")
 
-#---                     ----
-####  OPEN & REDUCE DATA  ####
-#---                     ----
+# partycolors
+#
+# kpö cc3333, fpö 0e428e, spö ce000c, green 87b52a, piraten 4c2582, bzö ee7f00
 
-# open votes districts, save raw data, remove clutter and save district voting validity data
-rawVotesDistrict <- read.csv2(paste0( folderRaw, "/GRW2012_Sprengelbezerg.csv" ), fileEncoding = "iso-8859-1")
-votesDistrict <- rawVotesDistrict
-votesDistrict <- votesDistrict[, c("beznr", "ptname", "listenplatz", "stimmen", "gueltig")]
-authorizedVotersDistrict <- rawVotesDistrict[, c("beznr", "gesamt", "gueltig", "unguel", "sprengelanzahl")]
+city[["partycolors"]] <- c("#ce000c", "#000000", "#0e428e", "#87b52a", "#cc3333", "#ee7f00", "#ffffff", "#4c2582", "#ffffff", "#ffffff", "#ffffff")
+names(city[["partycolors"]]) <- city[["acrParties"]]
 
-# open votes parishes, save raw data and remove clutter
-rawVotesParish <- read.csv2(paste0( folderRaw, "/GRW2012_Sprengelerg.csv" ), fileEncoding = "iso-8859-1")
-votesParish <- rawVotesParish
-votesParish <- votesParish[, c("sprengel", "ptname", "listenplatz", "stimmen", "gueltig")]
+# short names for parties
+city[["partyAcrAT"]] <- c("SPÖ", "ÖVP", "FPÖ", "Grüne", "KPÖ", "BZÖ", "CP-G", "Pirat", "ESK", "BBB", "WIR")
+city[["partyAcrIT"]] <- c("SPOE", "OEVP", "FPOE", "GRUENE", "KPOE", "BZOE", "CPG", "PIRAT", "ESK", "BBB", "WIR")
+city[["partyAcrAbs"]] <- c("SPOEabs", "OEVPabs", "FPOEabs", "GRUENEabs", "KPOEabs", "BZOEabs", "CPGabs", "PIRATabs", "ESKabs", "BBBabs", "WIRabs")
+city[["partyAcrRel"]] <- c("SPOErel", "OEVPrel", "FPOErel", "GRUENErel", "KPOErel", "BZOErel", "CPGrel", "PIRATrel", "ESKrel", "BBBrel", "WIRrel")
+# names(city[["partyAcrTranslation"]]) <- c("aut", "it", "abs", "rel")
 
-# open authorized voters, save raw data, remove clutter and save parish voting validity data
-rawAvParish <- read.csv2(paste0( folderRaw, "/GRW2012_Wahlberechtigte.csv" ), fileEncoding = "iso-8859-1")
-avParish <- rawAvParish
-avParish <- avParish[, c("sprengel", "wahlbe_gesamt", "wahlbe_mann", "wahlbe_frau")]
-authorizedVotersParish <- rawVotesParish[, c("sprengel", "gesamt", "gueltig", "unguel")]
+
+####  OPEN DATA  ####
+
+
+# open votes of parishes
+rawVotesParish <- read.csv2(paste0( environment[["folderDataRaw"]], "GRW2012_Sprengelerg.csv" ), fileEncoding = "iso-8859-1",
+                            col.names=c("eleShortName", "numParish", "acrParty", "nameParty", "list", "allVotes", 
+                                        "unvalidVotes", "validVotes", "votes", "numParishes", "", ""))
+
+# reduce votes of parishes data
+votesParishAll <- rawVotesParish[, c("numParish", "acrParty", "votes")]
+
+# save participation data
+participationParishAll <- rawVotesParish[, c("numParish", "allVotes", "validVotes", "unvalidVotes")]
+
+# open authorized voters of parishes
+rawAuthVotersParish <- read.csv2(paste0(  environment[["folderDataRaw"]], "GRW2012_Wahlberechtigte.csv" ), fileEncoding = "iso-8859-1", 
+                         col.names=c("eleShortName", "numParish", "authAll", "authMen", "authWomen"))
+
+# reduce authorized voters data
+authVotersParish <- rawAuthVotersParish[, c("numParish", "authAll", "authMen", "authWomen")]
 
 # save raw data as RDA file
-save(rawAvParish, rawVotesDistrict, rawVotesParish, file="./data/raw_grw2012.rda")
+filenameRawRDA <- "raw_grw2012.rda"
+names(filenameRawRDA) <- "filenameRawRDA"
+save(rawAuthVotersParish, rawVotesParish, file=paste0(environment[["folderData"]], filenameRawRDA))
+environment[["filenameRawRDA"]] <- filenameRawRDA
 
-# Check data
-# CheckData(votesDistrict) DEBUG
-# CheckData(votesDistrict) DEBUG
-#
-# conclusion:
-# missing value short party name of Einsparkraftwerk
-# everything else okay
+rm(rawAuthVotersParish, rawVotesParish, filenameRawRDA)
 
-#---
+
 ####  PREPARE DATA  ####
-#---
 
-# correct spatial columns of authorized voters and parish data
-avParish <- SplitParishAndDistrict(avParish, 1)
-votesParish <- SplitParishAndDistrict(votesParish, 1)
-votesDistrict$beznr <- votesDistrict$beznr / 100
-authorizedVotersDistrict$beznr <- authorizedVotersDistrict$beznr / 100
-authorizedVotersParish <- SplitParishAndDistrict(authorizedVotersParish, 1)
 
-# delete duplicate rows in voting validity data of district and parish
-authorizedVotersDistrict <- authorizedVotersDistrict[!duplicated(authorizedVotersDistrict),]
-rownames(authorizedVotersDistrict) <- 1:eleData[["numDistricts"]]
-authorizedVotersParish <- authorizedVotersParish[!duplicated(authorizedVotersParish),]
-rm(authorizedVotersDistrict)
+# correct party short names 
+levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "")] <- "ESK"
+levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "BZÖ")] <- "BZOE"
+levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "SPÖ")] <- "SPOE"
+levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "CP-G")] <- "CPG"
+levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "FPÖ")] <- "FPOE"
+levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "GRÜNE")] <- "GRUENE"
+levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "KPÖ")] <- "KPOE"
+levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "ÖVP")] <- "OEVP"
 
-# correct party short name of Einsparkraftwerk
-levels(votesDistrict[, "ptname"])[1] = "EKW"
-levels(votesParish[, "ptname"])[1] = "EKW"
+# extract district out of parish column
+authVotersParish <- ExtractDistrict(authVotersParish, "numParish", "numDistrict")
+votesParishAll <- ExtractDistrict(votesParishAll, "numParish", "numDistrict")
+participationParishAll <- ExtractDistrict(participationParishAll, "numParish", "numDistrict")
 
-# append votes done, valid votes and unvalid votes to parish
-# column: add all votes, valid votes and unvalid votes
-avParish <- cbind(avParish, authorizedVotersParish[, c("gesamt", "gueltig", "unguel")])
-rm(authorizedVotersParish, rawAvParish, rawVotesDistrict, rawVotesParish)
+# delete duplicate rows of parish participation data
+participationParishAll <- participationParishAll[!duplicated(participationParishAll),]
 
-#---
+# transform votes data: reduce rows into one row per parish and transform the rows with votes per party into columns
+votesParishAll <- TransformVotes(votesParishAll, "votes", "acrParty", city[["numParties"]])
+
+# get number of parishes
+numParishesAll <- votesParishAll[["numParish"]]
+numParishesEleDay <- numParishesAll[!(numParishesAll == 816 | numParishesAll == 2798 | numParishesAll == 2799)]
+city[["numParishesAll"]] <- numParishesAll
+city[["numParishesEleDay"]] <- numParishesEleDay
+rm(numParishesAll, numParishesEleDay)
+
+
 ####  PROCESS DATA  ####
-#---
-
-# get voters participation of city
-authVotersCity <- sum(avParish[, "wahlbe_gesamt"])
-authMen <- sum(avParish[, "wahlbe_mann"])
-authWomen <- sum(avParish[, "wahlbe_frau"])
-allVotes <- sum(avParish[, "gesamt"])
-validVotesCity <- sum(avParish[, "gueltig"])
-unvalidVotesCity <- sum(avParish[, "unguel"])
-electionPartCity <- validVotesCity / authVotersCity * 100
-listCity <- list(authVotersCity, authMen, authWomen, allVotes, validVotesCity, unvalidVotesCity, electionPartCity)
-names(listCity) <- c("authVoters", "authMen", "authWomen", "allVotes", "validVotes", "unvalidVotes", "electionPart")
-rm(authVotersCity, validVotesCity, allVotes, unvalidVotesCity, electionPartCity, authMen, authWomen)
-
-# generate votesCity with votes of parties (relative & absolute)
-votesCity <- data.frame(tapply(votesParish[, "stimmen"], votesParish[, "ptname"], sum))
-votesPartiesCityRel <- votesCity / listCity[["validVotes"]] * 100
-votesCity <- cbind(rownames(votesCity), votesCity, votesPartiesCityRel)
-colnames(votesCity) <- c("ptname", "votes_abs", "votes_rel") 
-rm(votesPartiesCityRel)
-
-# generate avDistrict with authorized voters and voting validity
-authAll <- tapply(avParish[, "wahlbe_gesamt"], avParish$bezirk, sum, simplify = TRUE)[1:eleData[["numVotDistricts"]]]
-authMen <- tapply(avParish[, "wahlbe_mann"], avParish$bezirk, sum, simplify = TRUE)[1:eleData[["numVotDistricts"]]]
-authWomen <- tapply(avParish[, "wahlbe_frau"], avParish$bezirk, sum, simplify = TRUE)[1:eleData[["numVotDistricts"]]]
-votesAll <- tapply(avParish[, "gesamt"], avParish$bezirk, sum, simplify = TRUE)[1:eleData[["numVotDistricts"]]]
-votesValid <- tapply(avParish[, "gueltig"], avParish$bezirk, sum, simplify = TRUE)[1:eleData[["numVotDistricts"]]]
-votesUnvalid <- tapply(avParish[, "unguel"], avParish$bezirk, sum, simplify = TRUE)[1:eleData[["numVotDistricts"]]]
-avDistrict <- as.data.frame(cbind(1:eleData[["numVotDistricts"]], authAll, authMen, authWomen, votesAll, votesValid, votesUnvalid))
-avDistrict[, 1] <- c(as.character(1:17), "27")
-names(avDistrict) <- c("bezirk", "wahlbe_gesamt", "wahlbe_mann", "wahlbe_frau", "stimmen_gesamt", "stimmen_gueltig", "stimmen_ungueltig")
-rownames(avDistrict) <- c(as.character(1:17), "27")
-rownames(avParish) <- 1:dim(avParish)[1]
-rm(authAll, authMen, authWomen, votesAll, votesUnvalid, votesValid)
-
-# get relative amount of authorized men and women of parishes and districts
-# get relative data always via absolute data, not by summing up relative data !
-relMen <- avParish[, "wahlbe_mann"] / avParish[, "wahlbe_gesamt"] * 100
-relWomen <- avParish[, "wahlbe_frau"] / avParish[, "wahlbe_gesamt"] * 100
-avParish <- cbind(avParish, relMen, relWomen)
-relMen <- avDistrict[, "wahlbe_mann"] / avDistrict[, "wahlbe_gesamt"] * 100
-relWomen <- avDistrict[, "wahlbe_frau"] / avDistrict[, "wahlbe_gesamt"] * 100
-avDistrict <- cbind(avDistrict, relMen, relWomen)
-rm(relMen, relWomen)
-
-# get relative amount of valid and unvalid votes of parishes and districts
-# get relative data always via absolute data, not by summing up relative data !
-relVal <- avParish[, "gueltig"] / avParish[, "gesamt"] * 100
-relUnval <- avParish[, "unguel"] / avParish[, "gesamt"] * 100
-avParish <- cbind(avParish, relVal, relUnval)
-relVal <- avDistrict[, "stimmen_gueltig"] / avDistrict[, "stimmen_gesamt"] * 100
-relUnval <- avDistrict[, "stimmen_ungueltig"] / avDistrict[, "stimmen_gesamt"] * 100
-avDistrict <- cbind(avDistrict, relVal, relUnval)
-rm(relVal, relUnval)
-
-# get relative votes of parties of parish and district
-relVotes <- votesParish[, "stimmen"] / votesParish[, "gueltig"] * 100
-votesParish <- cbind(votesParish, relVotes)
-relVotes <- votesDistrict[, "stimmen"] / votesDistrict[, "gueltig"] * 100
-votesDistrict <- cbind(votesDistrict, relVotes)
-rm(relVotes)
-
-# get election participation of districts and parishes
-relParticipation <- avDistrict[, "stimmen_gesamt"] / avDistrict[, "wahlbe_gesamt"] * 100
-avDistrict <- cbind(avDistrict, relParticipation)
-relParticipation <- avParish[, "gesamt"] / avParish[, "wahlbe_gesamt"] * 100
-avParish <- cbind(avParish, relParticipation)
-rm(relParticipation)
-
-#---
-####  QUALITY CHECK  ####
-#---
-
-# verify votes against sum of valid and unvalid votes
-# all(authorizedVotersParish$gesamt == authorizedVotersParish$unguel + authorizedVotersParish$gueltig) DEBUG
-# all(authorizedVotersDistrict$gesamt == authorizedVotersDistrict$unguel + authorizedVotersDistrict$gueltig) DEBUG
-
-# verify all authorized voters against sum of authorized men and women (absolut and relative)
-# all(avDistrict$vpAll == avDistrict$vpMen + avDistrict$vpWomen)
-# all(avParish[, "wahlbe_mann"] / avParish[, "wahlbe_gesamt"] + avParish[, "wahlbe_frau"] / avParish[, "wahlbe_gesamt"] == 1, na.rm = TRUE)
-# all(avDistrict[, "wahlbe_mann"] / avDistrict[, "wahlbe_gesamt"] + avDistrict[, "wahlbe_frau"] / avDistrict[, "wahlbe_gesamt"] == 1, na.rm = TRUE)
-
-# val1 <- sum(avParish$gueltig)
-# val2 <- sum(votesParish$stimmen)
-# val3 <- sum(avDistrict$stimme_gueltig)
-# diff <- val3 - sum(votesDistrict$stimmen) == avDistrict$stimme_gueltig[18]
-# rm(val1, val2, val3)
-
-#---
-####  SAVE DATA  ####
-#---
-# save(list=ls(), file="./data/prep_grw2012.rda")
-# rm(list=ls())
-
-##  FINAL DATA 
-#===============
-#
-# avParish 
-#   rows: ascending number
-#   cols: district, parish, district and parish, authorized voters, authorized male voters, authorized female voters, 
-#         all votes, valid votes, unvalid votes, authorized male voters relative, authorized female voters relative
-#         valid votes relative, unvalid votes relative, election participation relative
-#
-# avDistrict
-#   rows: ascending number
-#   cols: district, authorized voters, authorized male voters, authorized female voters, 
-#         all votes, valid votes, unvalid votes, authorized male votes relative, authorized votes female relative, 
-#         valid votes relative, unvalid votes relative, election participation relative
-#
-# votesDistrict
-#   rows: ascending number
-#   cols: district, short name party, list place, votes for party, valid votes in district, votes for party relative
-#
-# votesParish
-#   rows: ascending number
-#   cols: district, parish, district and parish, short name party, list place, votes, valid votes in parish, 
-#         relative votes for party in parish
-#
-# listCity
-#   elements: authoried voters of city, participated voters in city, election participation in percent 
-#
-# resultPartiesCity
-#   elements: sum of votes of every party in Graz
-#
-#================================================
 
 
+# get relative authorized men and women of parishes
+temp <- authVotersParish[, c("authMen", "authWomen")] / authVotersParish[["authAll"]] * 100
+colnames(temp) <- c("authMenRel", "authWomenRel")
+authVotersParish <- cbind(authVotersParish, temp)
+
+# get relative valid and unvalid votes of parishes
+temp <- participationParishAll[, c("validVotes", "unvalidVotes")] / participationParishAll[["allVotes"]] * 100
+colnames(temp) <- c("validVotesRel", "unvalidVotesRel")
+participationParishAll <- cbind(participationParishAll, temp)
+
+# get relative election participation
+temp <- data.frame(participationParishAll[["allVotes"]] / authVotersParish[["authAll"]] * 100)
+colnames(temp) <- "electionPartRel"
+participationParishAll <- cbind(participationParishAll, temp)
+
+# get relative votes of parties in parishes
+temp <- (votesParishAll[, 3:13] / participationParishAll[["validVotes"]] * 100)
+colnames(temp) <- c("SPOErel", "OEVPrel", "FPOErel", "GRUENErel", "KPOErel", "BZOErel", "CPGrel", "PIRATrel", "ESKrel", "BBBrel", "WIRrel")
+votesParishAll <- cbind(votesParishAll, temp)
+
+rm(temp)
+
+
+####  PREPARE DATA  ####
+
+
+# create parish data only with election day votes
+votesParishEleDay <- votesParishAll[!(votesParishAll[["numParish"]] == 816 | votesParishAll[["numParish"]] == 2798 | 
+                                        votesParishAll[["numParish"]] == 2799), ]
+
+participationParishEleDay <- participationParishAll[!(participationParishAll[["numParish"]] == 816 | participationParishAll[["numParish"]] == 2798 | 
+                                                        participationParishAll[["numParish"]] == 2799), ]
+
+authVotersParishEleDay <- authVotersParish[!(votesParishAll[["numParish"]] == 816 | votesParishAll[["numParish"]] == 2798 | 
+                                               votesParishAll[["numParish"]] == 2799), ]
+
+# create a second table for authorized voters with parish 816 (without 2798 & 2799) for maps 
+authVotersParishEleDayMap <- authVotersParish[!(votesParishAll[["numParish"]] == 2798 | votesParishAll[["numParish"]] == 2799), ]
+
+
+####  AGGREGATE DATA  ####
+
+# !!!!      for districts only use data from election day     !!!!
+# use authorized voters table and votes for parties table without parish 816, 2799 and 2798, so it keeps compareable
+
+# get authoried voters data for districts
+authAll <- tapply(authVotersParishEleDay[["authAll"]], authVotersParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+authMenAbs <- tapply(authVotersParishEleDay[["authMen"]], authVotersParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+authWomenAbs <- tapply(authVotersParishEleDay[["authWomen"]], authVotersParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+authMenRel <- authMenAbs / authAll * 100
+authWomenRel <- authWomenAbs / authAll * 100
+
+authVotersDistrict <- data.frame(numDistrict=1:17, authAll=authAll, authMenAbs=authMenAbs, authWomenAbs=authWomenAbs, 
+                                 authMenRel=authMenRel, authWomenRel=authWomenRel)
+
+rm(authAll, authMenAbs, authWomenAbs, authMenRel, authWomenRel)
+
+# get election participation data for districts
+allVotes <- tapply(participationParishEleDay[["allVotes"]], participationParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+validVotesAbs <- tapply(participationParishEleDay[["validVotes"]], participationParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+unvalidVotesAbs <- tapply(participationParishEleDay[["unvalidVotes"]], participationParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+validVotesRel <- validVotesAbs / allVotes * 100
+unvalidVotesRel <- unvalidVotesAbs / allVotes * 100
+
+electionParticipation <- allVotes / authVotersDistrict[["authAll"]] * 100
+
+participationDistrict <- data.frame(numDistrict=1:17, allVotes=allVotes, validVotesAbs=validVotesAbs, 
+                                    unvalidVotesAbs=unvalidVotesAbs, validVotesRel=validVotesRel, unvalidVotesRel=unvalidVotesRel, 
+                                    electionParticipation=electionParticipation)
+
+rm(allVotes, validVotesAbs, unvalidVotesAbs, validVotesRel, unvalidVotesRel, electionParticipation)
+
+# get absolute votes for every party for districts
+temp1 <- tapply(votesParishEleDay[, 3], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp2 <- tapply(votesParishEleDay[, 4], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp3 <- tapply(votesParishEleDay[, 5], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp4 <- tapply(votesParishEleDay[, 6], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp5 <- tapply(votesParishEleDay[, 7], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp6 <- tapply(votesParishEleDay[, 8], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp7 <- tapply(votesParishEleDay[, 9], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp8 <- tapply(votesParishEleDay[, 10], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp9 <- tapply(votesParishEleDay[, 11], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp10 <- tapply(votesParishEleDay[, 12], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp11 <- tapply(votesParishEleDay[, 13], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+
+votesDistrict <- data.frame(numDistrict=1:17, SPOEabs=temp1, OEVPabs=temp2, FPOEabs=temp3, GRUENEabs=temp4, KPOEabs=temp5, BZOEabs=temp6, 
+                                  CP=temp7, PIRATabs=temp8, ESKabs=temp9, BBBabs=temp10, WIRabs=temp11)
+names(votesDistrict)[which(names(votesDistrict) == "CP")] <- "CPGabs"
+
+temp <- votesDistrict[, 2:12] / participationDistrict[["validVotesAbs"]] * 100
+colnames(temp) <- c("SPOErel", "OEVPrel", "FPOErel", "GRUENErel", "KPOErel", "BZOErel", "CPGrel", "PIRATrel", "ESKrel", "BBBrel", "WIRrel")
+votesDistrict <- cbind(votesDistrict, temp)
+
+rm(temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10, temp11, temp)
+
+# get authorized voters data for city
+city[["authAll"]] <- sum(authVotersParish[, "authAll"])
+city[["authMenAbs"]] <- sum(authVotersParish[, "authMen"])
+city[["authWomenAbs"]] <- sum(authVotersParish[, "authWomen"])
+city[["authMenRel"]] <- city[["authMenAbs"]] / city[["authAll"]] * 100
+city[["authWomenRel"]] <- city[["authWomenAbs"]] / city[["authAll"]] * 100
+
+# get voting data for city
+city[["allVotes"]] <- sum(participationParishAll[, "allVotes"])
+city[["validVotesAbs"]] <- sum(participationParishAll[, "validVotes"])
+city[["unvalidVotesAbs"]] <- sum(participationParishAll[, "unvalidVotes"])
+city[["validVotesRel"]] <- city[["validVotesAbs"]] / city[["allVotes"]] * 100
+city[["unvalidVotesRel"]] <- city[["unvalidVotesAbs"]] / city[["allVotes"]] * 100
+
+# get election participation for city
+city[["electionParticipation"]] <- city[["allVotes"]] / city[["authAll"]] * 100
+
+# get party votes for city
+city[["votesPartiesAbs"]] <- apply(votesParishAll[, 3:13], 2, sum)
+names(city[["votesPartiesAbs"]]) <- str_replace(names(city[["votesPartiesAbs"]]), "abs", "")
+city[["votesPartiesRel"]] <- city[["votesPartiesAbs"]] / city[["validVotesAbs"]] * 100
+
+# delete rows for 2798 and 2799 from authorized voters table
+authVotersParish <- authVotersParish[!(authVotersParish[["numParish"]] == 2798 | authVotersParish[["numParish"]] == 2799), ]
+
+environment[["filenameFinalRDA"]] <- paste0(environment[["folderData"]], "grazwahl.rda")
+save(list=ls(), file=environment[["filenameFinalRDA"]])
+
+
+##  EXPORT DATA TO JSON  ##
+
+
+jsonFiles <- list()
+jsonFiles[["votesParishAll"]] <- toJSON(votesParishAll)
+jsonFiles[["votesParishEleDay"]] <- toJSON(votesParishEleDay)
+jsonFiles[["votesDistrict"]] <- toJSON(votesDistrict) # DEBUG
+jsonFiles[["authVotersParish"]] <- toJSON(authVotersParish)
+jsonFiles[["authVotersParishEleDay"]] <- toJSON(authVotersParishEleDay)
+jsonFiles[["authVotersDistrict"]] <- toJSON(authVotersDistrict) # DEBUG
+jsonFiles[["participationParishAll"]] <- toJSON(participationParishAll)
+jsonFiles[["participationDistrict"]] <- toJSON(participationDistrict) # DEBUG
+jsonFiles[["participationParishEleDay"]] <- toJSON(participationParishEleDay)
+
+for(i in seq_along(jsonFiles)) {
+  SaveJSON(jsonFiles[i])
+}
 
 
 

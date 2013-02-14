@@ -14,45 +14,78 @@
 #   												 
 ######################################################
 
-# splits the spatial area field into parish and district
-# variables => data: the whole dataframe; column: number of the dataframe
-SplitParishAndDistrict <- function(data, column) {
-  data[, column] <- AddZero(data[, column])
-  colnames(data)[column] <- "bezirk_sprengel" # static value for column index DEBUG
-  
-  colDistrict <- substr(data[, column], 1, 2)
-  colParish <- substr(data[, column], 3, 4)
-  splitUp <- data.frame(cbind(as.integer(colDistrict), as.integer(colParish)))
-  colnames(splitUp) <- c("bezirk", "sprengel")
-  data <- cbind(splitUp, data)
+#
+# Extracts the district out of the parish number
+#
+# variables
+# data: the whole dataframe; 
+# colParish: name of the column for the parish
+# colDistrict: name of the column for the district
+#
+
+ExtractDistrict <- function(data, colParish="numParish", colDistrict="numDistrict") {
+  library(stringr)
+  temp <- data
+  temp[[colParish]] <- NULL
+  data <- as.character(data[[colParish]])
+  length <- str_length(data)
+  district <- str_sub(data, end = length - 2)
+  data <- data.frame(as.numeric(data), as.numeric(district), temp)
+  names(data)[1] <- colParish
+  names(data)[2] <- colDistrict
+  rm(temp, length, district)
   data
 }
 
-# adds Zero to a integer < 1000 and converts it to character
-AddZero <- function(column) {
-  for(i in seq_along(column)) {
-    if( as.integer(column[i]) < 999) {
-      column[i] <- paste0("0", as.character(column[i]))
-    }
-  }
-  column
+#
+# reduce rows into one row per parish and transform the rows with votes per party into columns
+#
+# variables
+#   data: the comlete table (dataframe)
+#   colVotes: column name with the votes
+#   colParty: column name with the party acronym
+#
+
+TransformVotes <- function(data, colVotes, colParty, numParties) {
+  # save numbers of parishes and districts 
+  tmp <- data[, c("numParish", "numDistrict")]
+  tmp <- tmp[!duplicated(tmp),]
+  
+  # save 
+  data <- data[, c("acrParty", "votes")]
+  
+  rows <- length(data[[colVotes]]) / numParties
+  
+  new <- data[[colVotes]]
+  dim(new) <- c(numParties, rows)
+  new <- data.frame(t(new))
+  
+  colNames <- lapply(data[1:numParties, colParty], paste0, "abs")
+  names(new) <- colNames
+  data <- cbind(tmp, new)
 }
 
-# checks the consistency of data
-CheckData <- function(data) {
-  head(data)
-  tail(data)
-  dim(data)
-  names(data)
-  summary(data)
-  class(data)
-  sapply(data[1,], class)
-  unique(data$ptname)
-  unique(data$ptlang)
+
+#
+# DESCRIPTION
+#
+# variables
+#
+
+SaveJSON <- function(data) {
+  filename <- paste0(environment[["folderDataJSON"]], names(data), ".json")
+  write(data[[1]],filename)
 }
 
-# writes csv file
+
+#
+# DESCRIPTION
+#
+# variables
+#
+
 WriteCSV <- function(data, filename, folder = "QGIS", enc = "UTF-8") {
   write.csv(data, paste0(folder, "/", filename, "_comma[", enc, "].csv"), fileEncoding = enc)
   write.csv2(data, paste0(folder, "/", filename, "_semicolon[", enc, "].csv"), fileEncoding = enc)
 }
+
