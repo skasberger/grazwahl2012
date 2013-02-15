@@ -22,7 +22,6 @@
 # Wahlbeteiligung = voters participation
 
 
-
 ####  INITIALIZE  ####
 
 
@@ -44,62 +43,64 @@ city[["nameDistricts"]] <-c("Innere Stadt", "St. Leonhard", "Geidorf", "Lend", "
                     "Andritz", "Gösting", "Eggenberg", "Wetzelsdorf", "Straßgang", "Puntigam")
 city[["numDistricts"]] <- length(city[["nameDistricts"]])
 city[["numParties"]] <- 11L
+city[["leftMurNumDistricts"]] <- c(1, 2, 3, 6, 7, 8, 9, 10, 11, 12)
+city[["rightMurNumDistricts"]] <- c(4, 5, 13, 14, 15, 16, 17)
 
 # set environment data
-environment[["workDir"]] <- getwd()
-environment[["folderData"]] <- paste0(environment[["workDir"]], "/data/")
-environment[["folderDataGRWG12"]] <- paste0(environment[["workDir"]], "/data/grw2012/")
-environment[["folderDataRaw"]] <- paste0(environment[["workDir"]], "/data/raw/grw2012/")
-environment[["folderDataSpatialRaw"]] <- paste0(environment[["workDir"]], "/data/raw/spatial/")
-environment[["folderDataJSON"]] <- paste0(environment[["workDir"]], "/data/json/")
+environment[["workDir"]] <- paste0(getwd(), "/")
+environment[["folderData"]] <- paste0(environment[["workDir"]], "data/")
+environment[["folderDataRawCSV"]] <- paste0(environment[["workDir"]], "data/raw/csv/")
+environment[["folderDataRawR"]] <- paste0(environment[["workDir"]], "data/raw/rstat/")
+environment[["folderDataJSON"]] <- paste0(environment[["workDir"]], "data/json/")
+environment[["folderDataR"]] <- paste0(environment[["workDir"]], "data/rstat/")
 
 # partycolors
-#
 # kpö cc3333, fpö 0e428e, spö ce000c, green 87b52a, piraten 4c2582, bzö ee7f00
-
-city[["partycolors"]] <- c("#ce000c", "#000000", "#0e428e", "#87b52a", "#cc3333", "#ee7f00", "#ffffff", "#4c2582", "#ffffff", "#ffffff", "#ffffff")
+city[["partycolors"]] <- c("#ce000c", "#666666", "#0e428e", "#87b52a", "#cc3333", "#ee7f00", "#ffffff", "#4c2582", "#ffffff", "#ffffff", "#ffffff")
 names(city[["partycolors"]]) <- city[["acrParties"]]
 
-# short names for parties
+# party short names variations
 city[["partyAcrAT"]] <- c("SPÖ", "ÖVP", "FPÖ", "Grüne", "KPÖ", "BZÖ", "CP-G", "Pirat", "ESK", "BBB", "WIR")
 city[["partyAcrIT"]] <- c("SPOE", "OEVP", "FPOE", "GRUENE", "KPOE", "BZOE", "CPG", "PIRAT", "ESK", "BBB", "WIR")
 city[["partyAcrAbs"]] <- c("SPOEabs", "OEVPabs", "FPOEabs", "GRUENEabs", "KPOEabs", "BZOEabs", "CPGabs", "PIRATabs", "ESKabs", "BBBabs", "WIRabs")
 city[["partyAcrRel"]] <- c("SPOErel", "OEVPrel", "FPOErel", "GRUENErel", "KPOErel", "BZOErel", "CPGrel", "PIRATrel", "ESKrel", "BBBrel", "WIRrel")
-# names(city[["partyAcrTranslation"]]) <- c("aut", "it", "abs", "rel")
 
 
 ####  OPEN DATA  ####
 
 
 # open votes of parishes
-rawVotesParish <- read.csv2(paste0( environment[["folderDataRaw"]], "GRW2012_Sprengelerg.csv" ), fileEncoding = "iso-8859-1",
+rawVotesParish <- read.csv2(paste0( environment[["folderDataRawCSV"]], "GRW2012_Sprengelerg.csv" ), fileEncoding = "iso-8859-1",
                             col.names=c("eleShortName", "numParish", "acrParty", "nameParty", "list", "allVotes", 
                                         "unvalidVotes", "validVotes", "votes", "numParishes", "", ""))
 
-# reduce votes of parishes data
-votesParishAll <- rawVotesParish[, c("numParish", "acrParty", "votes")]
+# open authorized voters of parishes
+rawAuthVotersParish <- read.csv2(paste0(  environment[["folderDataRawCSV"]], "GRW2012_Wahlberechtigte.csv" ), fileEncoding = "iso-8859-1", 
+                         col.names=c("eleShortName", "numParish", "authAll", "authMen", "authWomen"))
 
 # save participation data
 participationParishAll <- rawVotesParish[, c("numParish", "allVotes", "validVotes", "unvalidVotes")]
 
-# open authorized voters of parishes
-rawAuthVotersParish <- read.csv2(paste0(  environment[["folderDataRaw"]], "GRW2012_Wahlberechtigte.csv" ), fileEncoding = "iso-8859-1", 
-                         col.names=c("eleShortName", "numParish", "authAll", "authMen", "authWomen"))
-
 # reduce authorized voters data
 authVotersParish <- rawAuthVotersParish[, c("numParish", "authAll", "authMen", "authWomen")]
 
-# save raw data as RDA file
-filenameRawRDA <- "raw_grw2012.rda"
-names(filenameRawRDA) <- "filenameRawRDA"
-save(rawAuthVotersParish, rawVotesParish, file=paste0(environment[["folderData"]], filenameRawRDA))
-environment[["filenameRawRDA"]] <- filenameRawRDA
+# reduce votes of parishes data
+votesParishAll <- rawVotesParish[, c("numParish", "acrParty", "votes")]
 
-rm(rawAuthVotersParish, rawVotesParish, filenameRawRDA)
+# save raw data as RDA file
+environment[["filenameRawRDA"]] <- "grazwahl.rda"
+save(rawAuthVotersParish, rawVotesParish, file=paste0(environment[["folderDataRawR"]], environment[["filenameRawRDA"]]))
+
+rm(rawAuthVotersParish, rawVotesParish)
 
 
 ####  PREPARE DATA  ####
 
+
+# get number of parishes
+city[["numParishesAll"]] <- votesParishAll[["numParish"]]
+city[["numParishesEleDay"]] <- city[["numParishesAll"]][!(city[["numParishesAll"]] == 816 | city[["numParishesAll"]] == 2798 
+                                                          | city[["numParishesAll"]] == 2799)]
 
 # correct party short names 
 levels(votesParishAll[, "acrParty"])[which(levels(votesParishAll[, "acrParty"]) == "")] <- "ESK"
@@ -119,15 +120,20 @@ participationParishAll <- ExtractDistrict(participationParishAll, "numParish", "
 # delete duplicate rows of parish participation data
 participationParishAll <- participationParishAll[!duplicated(participationParishAll),]
 
+
+# save cleaned data 
+authVotersParishPP1 <- authVotersParish
+participationParishAllPP1 <- participationParishAll
+votesParishAllPP1 <- votesParishAll
+
+environment[["filenameDataPP1"]] <- "grazwahlPP1.rda"
+save(list=c("votesParishAllPP1", "participationParishAllPP1", "authVotersParishPP1"), 
+     file=paste0(environment[["folderDataR"]], environment[["filenameDataPP1"]]))
+rm(votesParishAllPP1, participationParishAllPP1, authVotersParishPP1)
+# load(file=paste0(environment[["folderDataR"]], environment[["filenameDataPP1"]]))
+
 # transform votes data: reduce rows into one row per parish and transform the rows with votes per party into columns
 votesParishAll <- TransformVotes(votesParishAll, "votes", "acrParty", city[["numParties"]])
-
-# get number of parishes
-numParishesAll <- votesParishAll[["numParish"]]
-numParishesEleDay <- numParishesAll[!(numParishesAll == 816 | numParishesAll == 2798 | numParishesAll == 2799)]
-city[["numParishesAll"]] <- numParishesAll
-city[["numParishesEleDay"]] <- numParishesEleDay
-rm(numParishesAll, numParishesEleDay)
 
 
 ####  PROCESS DATA  ####
@@ -171,6 +177,8 @@ authVotersParishEleDay <- authVotersParish[!(votesParishAll[["numParish"]] == 81
 
 # create a second table for authorized voters with parish 816 (without 2798 & 2799) for maps 
 authVotersParishEleDayMap <- authVotersParish[!(votesParishAll[["numParish"]] == 2798 | votesParishAll[["numParish"]] == 2799), ]
+
+# prepare data for left and right mur districts comparison
 
 
 ####  AGGREGATE DATA  ####
@@ -253,8 +261,8 @@ city[["votesPartiesRel"]] <- city[["votesPartiesAbs"]] / city[["validVotesAbs"]]
 # delete rows for 2798 and 2799 from authorized voters table
 authVotersParish <- authVotersParish[!(authVotersParish[["numParish"]] == 2798 | authVotersParish[["numParish"]] == 2799), ]
 
-environment[["filenameFinalRDA"]] <- paste0(environment[["folderData"]], "grazwahl.rda")
-save(list=ls(), file=environment[["filenameFinalRDA"]])
+environment[["filenameDataPP2"]] <- "grazwahlPP2.rda"
+save(list=ls(), file=paste0(environment[["folderDataR"]], environment[["filenameDataPP2"]]))
 
 
 ##  EXPORT DATA TO JSON  ##
@@ -274,7 +282,6 @@ jsonFiles[["participationParishEleDay"]] <- toJSON(participationParishEleDay)
 for(i in seq_along(jsonFiles)) {
   SaveJSON(jsonFiles[i])
 }
-
 
 
 
