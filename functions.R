@@ -346,7 +346,7 @@ DensityPlot <- function(data, filename, color, title, output=T, png=F, svg=F, pd
 # variables
 #
 
-CalculateCorrelation  <- function(dataParish, dataDistrict, folder, colors, namesIT, namesAT, legend=F, output=T, png=F, svg=F, pdf=F) {
+CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson", folder, colors, namesIT, namesAT, legend=F, output=T, png=F, svg=F, pdf=F) {
   
   if(dim(dataParish)[2] & length(names) & dim(dataDistrict)[2]) {
     
@@ -358,8 +358,8 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, folder, colors, name
     for(i in seq_along(1:numParties)) {
       for(j in seq_along(1:numParties)) {
         if(i != j ) {
-          corCoefPar[i, j] <- cor(dataParish[, i], dataParish[, j])
-          corCoefDis[i, j] <- cor(dataDistrict[, i], dataDistrict[, j])
+          corCoefPar[i, j] <- cor(dataParish[, i], dataParish[, j], method=corrMethod)
+          corCoefDis[i, j] <- cor(dataDistrict[, i], dataDistrict[, j], method=corrMethod)
         }
       }
     }
@@ -380,23 +380,32 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, folder, colors, name
     names(corCoefDis) <- namesIT
     row.names(corCoefDis) <- namesIT
     
+    if(corrMethod == "pearson") {
+      methName <- "Pearson"
+      methAcr <- "Pear"
+    }
+      
+    if(corrMethod == "spearman") {
+      methName <- "Spearman"
+      methAcr <- "Spear"
+    }
+
     # plot correlations as barplots for every party
     for(i in seq_along(1:numParties)) {
-      
       # parish
       CorrelationColumnChart(corCoefParOne[i,], 
-                             filename=paste0(folder, "barCorr", namesIT[i] , "ParAbs"), 
+                             filename=paste0(folder, "barCorr", namesIT[i], methAcr, "ParAbs"), 
                              colors=colors, 
                              names=namesAT,
-                             title=paste0("Korrelationen Sprengel-Stimmen von ", namesAT[i], " (abs)"), 
+                             title=paste0(methName, " Korrelationen Sprengel-Stimmen von ", namesAT[i], " (abs)"), 
                              legend=legend, output=output, png=png, svg=svg, pdf=pdf)
       
       # district
       CorrelationColumnChart(corCoefDisOne[i,], 
-                             filename=paste0(folder, "barCorr", namesIT[i] , "DisAbs"), 
+                             filename=paste0(folder, "barCorr", namesIT[i], methAcr, "DisAbs", methAcr), 
                              colors=colors, 
                              names=namesAT,
-                             title=paste0("Korrelationen Bezirk-Stimmen von ", namesAT[i], " (abs)"), 
+                             title=paste0(methName, " Korrelationen Bezirk-Stimmen von ", namesAT[i], " (abs)"), 
                              legend=legend, output=output, png=png, svg=svg, pdf=pdf)
     }
     
@@ -417,3 +426,47 @@ WriteCSV <- function(data, filename, folder = "QGIS", enc = "UTF-8") {
   write.csv2(data, paste0(folder, "/", filename, "_semicolon[", enc, "].csv"), fileEncoding = enc)
 }
 
+BoxplotLR <- function(data, filename, colSeg, colors, names, title, legend=F, output=T, svg=F, pdf=F, png=F) {
+  
+  # output to the console
+  if(output) {
+    boxplot(data ~ colSeg, col=colors, names=names)
+    title(title)
+  }
+    # export png
+    if(png) {
+      png(file=paste0(filename, ".png"), height=400, width=600)
+      boxplot(data ~ colSeg, col=colors, names=names)
+      
+      if(legend) {
+        legend("topright", names, fill=colors)
+      }
+      
+      title(title)
+      dev.off()  
+    }
+    
+    # export svg
+    if(svg) {
+      svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
+      boxplot(data ~ colSeg, col=colors, names=names)
+      
+      if(legend) {
+        legend("topright", names, fill=city[["partycolors"]])
+      }
+      
+      title(title)
+      dev.off()  
+    }
+    
+    # export pdf
+    if(pdf) {
+      
+      boxplot(data ~ colSeg, col=colors, names=names)
+      if(legend) {
+        legend("topright", names, fill=colors)
+      }
+      title(title)
+      dev.copy2pdf(file=paste0(filename, ".pdf"))
+    }
+}

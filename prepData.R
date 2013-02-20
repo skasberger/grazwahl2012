@@ -12,6 +12,7 @@
 #   												 
 ######################################################
 
+
 ####  INFORMATION  ####
 
 ## DICTIONARY
@@ -119,7 +120,6 @@ participationParishAll <- ExtractDistrict(participationParishAll, "numParish", "
 
 # delete duplicate rows of parish participation data
 participationParishAll <- participationParishAll[!duplicated(participationParishAll),]
-
 
 # save cleaned data 
 authVotersParishPP1 <- authVotersParish
@@ -263,6 +263,7 @@ authVotersParish <- authVotersParish[!(authVotersParish[["numParish"]] == 2798 |
 
 environment[["filenameDataPP2"]] <- "grazwahlPP2.rda"
 save(list=ls(), file=paste0(environment[["folderDataR"]], environment[["filenameDataPP2"]]))
+# load()
 
 
 ##  EXPORT DATA TO JSON  ##
