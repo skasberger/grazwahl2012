@@ -1,0 +1,425 @@
+
+* ANFORDERUNGEN ANALYSE GRAZWAHLEN 2012
+Die Analyse soll einem einen kleine Einblick in das Ergebnis der Grazer Gemeinderatswahlen 2012 geben. Im Zuge des Arbeiten mit Datensätzen zu Wahlen soll den spezifischen Fragestellungen nachgegangen und diese visual dargestellt werden.
+Dies ist in erster Linie das Visualisieren des Ergebnisses auf einer Karte der Stadt Graz sowie Erzeugen unterschiedlicher Säulendiagramme zu den einzelnen Bezirken. 
+Weiters soll auch eine Analyse von Graz spezifischen Fragestellungen in Verbindung sozio-ökonomischen Daten (sofern vorhanden) gemacht und nach räumlichen Mustern gesucht werden.
+[Grazer Gemeinderatswahlen 2012](http://www.graz.at/cms/ziel/4787925/DE/)
+
+** DATEN
+Datenformate
+- Rohdaten: CSV und RDA
+- Vorbereitete Daten: RDA
+
+Datenarten
+- Wahlberechtigung für jede räumliche Ebene
+- Wahlbeteiligung & Wahlberechtigung für jede räumliche Ebene
+- Stimmen der Parteien für jede räumliche Ebene
+
+Standard Format/Struktur überlegen
+** VISUALISIERUNGEN
+- Choroplethen Karten zu jeder Partei auf allen räumlichen Ebenen: Bezirke eingeförbt mit Sieger Partei
+- Säulendiagramm zu jeder Partei auf allen räumlichen Ebenen
+- Säulendiagramm zur Wahlbeteiligung auf allen räumlichen Ebene
+- Infographik, die die wichtigsten Informationen zusammen fasst
+- Finden der Parteifarben
+- Boxplots einer Partei und deren Ergebnis auf einer räumlichen Ebene und dies dann für alle räumlichen Ebenen machen
+- Quadratische Box (ala OpenSpending) zeichnen, die alle Wahlberechtigten quantitative darstellt; dann die Untermenge der abgegebenen Stimmen(116.381) in ungültig und gültig unterteilen; gültig dann noch weiter in die jeweiligen Parteien unterteilen
+** ANALYSE
+- räumliche Verteilung der Stimmen zu jeder Partei
+- räumliche Verteilung der Wahlbeteiligung
+- Analyse mit sozio-ökonomischen Daten als Zusatz: Bildung, Einkommen, Eigentum, Ethnie, Herkunft, Alter
+- linkes und rechtes Murufer vergleichen
+- Sitze berechnen
+** FUNKTIONEN
+- Funktionen zum Qualitäts-Check: selber aggregierte Daten gegen Rohdaten verifizieren
+- Agreggieren der Stimmen einer Partei einer Raumeinheit
+- Korrigieren von räumlichen Codes
+** WEB
+- selber zusammenstellen, welche Koalitionen möglich sind mit Koalitionskarten
+- IdeengeberInnen: http://vis.uell.net/wahlatlas/ http://fivethirtyeight.blogs.nytimes.com/author/nate-silver/
+- Choroplethen Karte http://nds2013.vis4.net/wahlkarten/
+- Einzelergebnisse mit Hintergrund Infos http://nds2013.vis4.net/wahlkreise/
+- semantisch machen
+** DOKUMENTATION
+* UMSETZUNG ANALYSE GRAZWAHLEN 2012
+** 0.1 - DATENVORBEREITUNG
+# todo
+- urheberrecht zu grafiken adden
+- auf datengrundlage in finalen werken und in der doku hinweisen: aggragierte daten der sprengel auf bezirksebene sind nur die stimmen vom wahltag selber!
+- Lizenzen in ordnern kopieren
+- dokumentieren der datenstruktur 
+- Erkenntnisse über Rohdaten und die Datenstruktur der Rohdaten bloggen: datenübersicht in libre office calc => vergleich mit website, addieren der spalten/werte
+- tarballs anbieten
+- nummern zu säulendiagrammen hinzufügen
+- varianzen der korrelationen
+*** ANFORDERUNGEN
+- Korrigieren von Fehlern im Datensatz
+- Aufbereiten der Rohdaten für die weitere Verwendung
+- Funktionen für Standard Prozesse
+- Speichern der Rohdaten und prozessierten Daten in RDA Format
+- Organisieren der Dateien
+- Überlegen einer Datenstruktur für die unterschiedlichen Phasen der Datenverarbeitung
+- Identifizieren und aufbereiten der wichtigsten Variablen und Werte
+- Korrelationsanalyse der Stimmabgaben
+- Verteilungen visualisieren mit Boxplots, Dichefunktions Plots und Histogrammen
+- Ergebnis visualisieren mittels Söulendiagramme
+*** DOKUMENTATION
+Redundanter Code wurde zum Ende hin mittels Funktionen stark reduziert und die Verwendung und weitere Nutzung dadurch stark vereinfacht. Ins besondere wurden Funktionen 
+für das automatische Speichern der Plots in unterschiedliche Dateiformate geschrieben und die Dateneingabe zur Berechnung der Korrelationen mitsamt Säulendiagramme klar definiert.
+
+Big 6 werden hier wie folgt die 6 Parteien die es in den Gemeinderat geschafft haben genannt.
+
+**** ORGANISATION
+- Lizenz Texte wurden in Ordner gegeben
+- passende Ordner Struktur gefunden:
+  - data
+    - raw
+      - shape
+      - csv
+      - rstat
+    - json
+    - rstat
+    - shape
+  - images
+  - doc
+**** FACTS
+besondere Stimmen
+- 816: vorgezogenen Wahltag am 16. November 2012; Seniorenpflegeheim mit um die 80 Stimmabgaben am Tag der Wahl
+- 2798: Briefwahlstimmen 
+- 2799: am Wahltag in Wahlkartenwahllokalen oder vor einer besonderen Wahlbehörde verwendeten Wahlkarten (z.B. Hausbesuche)
+
+Die Vorwahlen sind unter dem Sprengel 816 eingetragen
+http://www.graz.at/cms/beitrag/10203278/4829113/
+Inkonsistenz in Daten: es waren anscheinend um die 8000 vorgezogene Wahlen
+
+**** DICTIONARY
+- Sprengel = parish
+- Bezirk = district
+- berechtigte WählerInnen = authorized voters
+- Wahlbeteiligung = voters participation
+
+**** RAW DATA
+# data check ergebnis
+- Parteien sind nach dem Listenplatz in allen Datensätzen geordnet
+
+# File Encoding alle Dateien
+FILETYPES
+fileinfo
+2003_grw_sprengelbezerg.csv:  ISO-8859 text
+2003_grw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
+2005_ltw_sprengelbezerg.csv:  ISO-8859 text
+2005_ltw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
+2006_nrw_sprengelbezerg.csv:  ISO-8859 text
+2006_nrw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
+2008_grw_sprengelbezerg.csv:  ISO-8859 text
+2008_grw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
+2008_nrw_sprengelbezerg.csv:  ISO-8859 text
+2008_nrw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
+ltw_2010_sprengelbezerg.csv:  ISO-8859 text
+ltw_2010_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
+ltw_2010_sprengel_wahlbe.csv: ASCII text, with CRLF line terminators
+! auch die neuen der GRW2012 sind ISO-8859 !
+
+mime-encoding (charset)
+2003_grw_sprengelbezerg.csv:  iso-8859-1
+2003_grw_sprengelerg.csv:     iso-8859-1
+2005_ltw_sprengelbezerg.csv:  iso-8859-1
+2005_ltw_sprengelerg.csv:     iso-8859-1
+2006_nrw_sprengelbezerg.csv:  iso-8859-1
+2006_nrw_sprengelerg.csv:     iso-8859-1
+2008_grw_sprengelbezerg.csv:  iso-8859-1
+2008_grw_sprengelerg.csv:     iso-8859-1
+2008_nrw_sprengelbezerg.csv:  iso-8859-1
+2008_nrw_sprengelerg.csv:     iso-8859-1
+ltw_2010_sprengelbezerg.csv:  iso-8859-1
+ltw_2010_sprengelerg.csv:     iso-8859-1
+ltw_2010_sprengel_wahlbe.csv: us-ascii
+
+***** GRW2012_Sprengelbezerg.csv
+Stimmen der Parteien aus allen 17 Bezirken. 
+
+Die Abkuerzung fuer das Einsparkraftwerk fehlt.
+
+Es fehlen die Briefwahlstimmen (2798) und die Stimmen der vorgezogenen Stimmabgabe (2799)
+Somit ist dieser Datensatz nicht dazu geeignet um daraus die Ergebnisse auf Stadt Ebene zu errechnen.
+Dafür können Visualisierungen auf Bezirksebene gleich mit diesen Daten gemacht werden (Choroplethen Diagramm)
+http://www.graz.at/x_wahl2003/erg/grwahl/bez99.htm
+
+Den vorgezogenen Wahltag am 16. November 2012 hatten 8.795 Grazerinnen und Grazer für 
+die Stimmabgabe genutzt. Die Öffnung und Auszählung dieser Wahlkuverts erfolgte erst 
+am gestrigen Wahlsonntag. Die Stimmen der vorgezogenen Stimmabgabe müssen gemäß der 
+Wahlordnung ununterscheidbar in ein Sprengelwahlergebnis miteinbezogen werden. Daher wurden 
+diese einem Sprengel in einem Seniorenpflegeheim in St. Peter zugewiesen und in diesem mit 
+ausgezählt. Auf die Mandatsverteilung für den Gemeinderat - welche vom Gesamtergebnis Graz 
+erfolgt - hat das keine Auswirkung. 
+
+# Reihen
+187 (Bezirke x Parteien)
+Header
+
+# Spalten
+- wkurz => Abkuerzung Wahl
+- beznr => Nummer Bezirk
+- bezname => Name Bezirk
+- ptname => Abkuerzung Partei
+- listenplatz
+- gesamt => abgegebene Stimmen gesamt
+- unguel => abgegebene Stimmen ungueltig
+- gueltig => abgegebene Stimmen gueltig
+- stimmen => Stimmen pro Partei pro Bezirk
+- sprengelanzahl => Anahl der Sprengel
+
+# Schlüssel-Daten
+- Gesamt: 110711
+- Stimmen: 108829
+- Gueltig: 108829
+- Ungueltig: 1882
+- Bezirke: 17
+
+Die Daten wurden mit den Sprengeldaten verglichen. Ergebnis: Die Daten sind ident mit den Daten aus GRW2012_Sprengelerg.csv aus den Bezirken (also ohne 2798 und 2799).
+***** GRW2012_Sprengelerg.csv
+Stimmen für die Parteien aus allen 272 Sprengeln.
+Die Abkuerzung fuer das Einsparkraftwerk fehlt.
+
+# Reihen 
+2992 (Sprengel x Partei)
+inklusive Sprengel 2798 (Briefwahl) und 2799 (vorgezogene Stimmabgabe)
+Header
+
+# Spalten
+- wkurz => Wahlenkurzzeichen
+- sprengel => sprengelcode: Bezirk und Sprengel
+- ptname => Abkuerzung Partei
+- ptlang => Name Partei
+- listenplatz
+- gesamt => abgegebene Stimmen gesamt
+- unguel => ungueltige abgegebene Stimmen
+- gueltig => gueltige abgegebene Stimmen
+- stimmen => Stimmen pro Sprengel pro Partei
+- anzspr => Anzahl der Sprengel
+
+# Schlüssel-Daten
+- Gesamt: 116381 
+- Stimmen: 114412
+- Gueltig: 114412
+- Ungueltig: 1969
+- Sprengel: 272
+- Vorwahl gueltig: 5583
+- Vorwahl ungueltig: 87
+- Vorwahl Stimmen: 5583
+- Vorwahl Gesamt: 5670
+
+# Sprengel 816
+Der Sprengel 816 wurde dazu verwendet um die XXXX einem fixen Sprengel zuzuweisen.
+Daten:
+- Gesamt: 8819
+- ungueltig: 97
+- gueltig: 8722
+- spoe: 1134
+- oevp: 3130
+- fpoe: 1059
+- gruene: 1348
+- kpoe: 1624
+- bzoe: 129
+- cpg: 47
+- piraten: 198
+- ekw: 24
+- bbb: 11
+- wir: 18
+
+***** GRW2012_Wahlberechtigte.csv
+Wahlberechtigte Personen aus jedem Sprengel
+
+# Reihen
+272 (Sprengel)
+Header
+
+# Spalten
+- wkurz => Abkuerzung Wahl
+- sprengel => Sprengelcode: bezirk und sprengel
+- wahlbe_gesamt => Wahlberechtigte gesamt
+- wahlbe_mann => Wahlberechtigte Maenner
+- wahlbe_frau => Wahlberechtigte Frauen
+
+**** PROCESSED DATA
+- Wichtig ist dabei, dass alle Verarbeitungen und Berechnungen auf den atomarsten Datensätzen zu grundeliegen, den Ergebnissen auf Sprengelebene
+***** Wahlbeteiligung Sprengel
+1) Gesamt
+2) Wahltag: ohne Sprengel 816, 2798, 2799
+
+# data
+- Nummer Sprengel
+- Nummer Bezirk
+- abgegebene Stimmen abs+rel
+- gültige Stimmen abs+rel
+- ungültige Stimmen abs+rel
+***** Wahlbeteiligung Bezirk
+nur Wahltag
+
+# data
+- Nummer Bezirk
+- abgegebene Stimmen abs+rel
+- gültige Stimmen abs+rel
+- ungültige Stimmen abs+rel
+***** Wahlberechtigung Sprengel
+
+- Gesamte Stimmen
+- nur Wahltag: ohne Sprengel 816, 2798, 2799
+
+# data
+- Nummer Sprengel
+- Nummer Bezirk
+- Wahlberechtigte Gesamt
+- wahlberechtigte Männer abs+rel
+- wahlberechtigte Frauen abs+rel
+***** Wahlberechtigung Bezirk
+nur Wahltag
+
+# data
+- Nummer Bezirk
+- Wahlberechtigte Gesamt
+- wahlberechtigte Männer abs+rel
+- wahlberechtigte Frauen abs+rel
+***** Stimmen Sprengel
+- Gesamte Stimmen
+- nur Wahltag: ohne Sprengel 816, 2798, 2799
+***** Stadt
+# data
+- abgegebene Stimmen
+- gültige Stimmen
+- ungültige Stimmen
+- Wahlberechtigte
+- Wahlberechtigte Männer
+- Wahlberechtigte Frauen
+- Stimmen Parteien
+- Wahlbeteiligung
+- Anzahl Bezirke
+- Bezirknamen
+- Namen Parteien
+**** PLOTS
+***** Boxplots
+- Verteilung aller Parteien
+- Verteilung der Big 6
+- Verteilung jeder Partei
+- Verteilung Parteien Sprengel
+- Verteilung Big 6 Sprengel
+- jede Partei Sprengel
+- Verteilung Wahlbeteiligung Sprengel
+- Verteilung abgegebene Stimmen Sprengel
+***** Histogramme
+- Verteilung der Stimmen der Sprengel
+- Verteilung Parteien
+- Verteilung Wahlbeteiligung Sprengel
+- Verteilung unvalide Stimmen Sprengel
+***** Dichtefunktionen
+- Dichtefunktion Parteien Sprengel
+***** Säulendiagramme
+- Ergebnis Parteien Stadt
+- Ergebnis Big 6 Stadt
+- Korrelations-Analyse Sprengel
+- Wahlbeteiligung Bezirk
+- Wahlberechtigung Bezirk
+- Unvalide Stimmen Bezirk
+**** KORRELATIONS-ANALYSE
+*** SPAETER
+** 0.x - Choroplethen Diagramm
+# todo
+- Export: PNG, PDF, SVG, 
+- Beschriftung der Bezirke
+- Legende
+- Intervalle passend Wählen
+- Aussagekraft der Datenvisualisierung überlegen
+- Titel
+- Copyright
+*** ANFORDERUNGEN
+*** DOKUMENTATION
+*** SPAETER
+** 0.x - Kleine- und Neuparteien
+- wo waren die kleinen und/oder neuen parteien am stärksten: BBB, WIR, CPG, etc
+** 0.x - Infographik
+- zusammenfassende Infographik
+** 0.x - Package Update
+- export von bildern und daten optional machen: abfrage oder so
+- funktionen verallgemeinern
+** 0.x - Qualitätssicherung
+# todo
+- daten checken: outlier in stimmen, wahlbeteiligung, und wahlberechtigung suchen
+- Qualitätsicherung betreiben
+   - Daten kontrollieren: Daten vorhanden, Daten konsistent, Encoding korrekt,
+   - Sprengelergebnisse zusammen rechnen und mit Bezirksdaten vergleichen
+   - Bezirksergebnisse zusammen rechnen und mit Stadtdaten vergleichen
+   - Stichproben rechnen
+
+*** ANFORDERUNGEN
+*** SPAETER
+*** DOKUMENTATION
+** 0.x - Linkes/Rechtes Murufer
+# todo
+- Linkes VS rechtes Murufer vergleichenk
+
+*** ANFORDERUNGEN
+*** DOKUMENTATION
+*** SPAETER
+** 0.x - Daten Analyse
+- Spearman Rank Korrelation erfassen
+** 0.x - Koalitionen
+# todo
+- Koalitionen visualisieren http://vis4.net/blog/posts/forget-about-parties-show-the-coalitions/?piwik_campaign=rss&piwik_kwd=3870
+
+*** ANFORDERUNGEN
+*** DOKUMENTATION
+*** SPAETER
+** 0.x - Twitter
+# todo
+
+*** ANFORDERUNGEN
+*** DOKUMENTATION
+#hashtags
+piraten
+grazwahl
+grazwaehlt
+grw12
+graz12
+graz2012
+graz
+*** SPAETER
+
+** 0.x - Web
+- http://uselectionatlas.org/RESULTS/
+- Exportieren der Daten in JSON nud GeoJSON
+- Visualisiern der Daten zur Exploration und Interaktion im Web
+- Flächige Visualisierung ala Open Spending machen: großes Quadrat => Wahlberechtigt, kleiner Wahlbeteiligung, kleiner Valide Stimmen, kleiner die einzelnen Parteien
+* REQUIREMENTS R ELECTION PACKAGE
+- function to rename variable names -> columns and rows 
+- bar chart with results of a party in all spatial areas in ascending order (relative and absolute, different spatial levels)
+- bar chart with results of all parties in all areas in ascending order of election participation of the area (absolut & relative))
+- Test the Data for election corruption
+- bar chart with result of all parties in one area (relative & absolute, single and aggregated area)
+- choropleth map of a party on all spatial levels (absolut and relative)
+- line charts for trend analysis
+- bar chart of election participitation on all spatial levels (absolut and relative)
+- choropleth map of election participation on all spatial levels (absolute and relative)
+- fast and easy visualiziation of potential coalitions
+- analyse correlations based on socio-economic data
+- manually cluster specific regions and compare
+- test of reasonability of data: check if votes are in between 0 and maximum allowed voters for spatial area, if votes all together are in between of 0 and allowed voters, and so on
+- QGIS AddOn dazu erstellen: automatisches importieren von Shapefiles und verarbeiten erstellen: diverse Karten mit Beschriftung, Copyright, Export
+* IMPLEMENTATION R ELECTION PACKAGE
+* PRAESENTATION
+- zahlen angeben: wieviele bilder, wieviele zeilen code,...
+- zeige das Wichtigste zuerst: das Wahlergebnis
+- mit irgendwas lustigem anfangen => stalingraz, kpö oder ähnliches, vielleicht kommunistische piraten oder sowas...
+
+
+
+# FRAGEN / FEEDBACK
+- warum vorgezogenen Wahltag nicht in eigenen Sprengel rein geben?
+- Encoding Files
+- Geodaten immer mitliefern
+- Daten zu Umfragen vorhanden?
+- Weitere Analysen?
+
+  
+
+
+Ing. Mörth Referat 1b, IT, 

@@ -24,7 +24,7 @@ load(paste0(environment[["folderDataRawR"]], environment[["filenameRawRDA"]]))
 
 environment[["folderImages"]] <- paste0(environment[["workDir"]],"images/")
 
-source("functions.R")
+source(environment[["functions.R"]])
 
 
 ##  BOXPLOTS  ##
@@ -48,7 +48,7 @@ Boxplot(votesParishEleDay[,c(14:18, 21)], filename=paste0(environment[["folderIm
         colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], title="Boxplots Big6 (rel)", 
         legend=T, output=T, svg=T, pdf=T, png=T)
 
-# parishes distribution every party solely
+# parishes distribution every party itself
 for(i in seq_along(1:city[["numParties"]])) {
   # absolute 
   Boxplot(votesParishEleDay[, 2+i], 
@@ -111,7 +111,7 @@ VotesColumnChart(city[["votesPartiesRel"]],
                  title="Ergebnis Parteien (rel)", 
                  output=T, png=T, svg=T, pdf=T)
 
-# all authorized votes districts 
+# all authorized votes  ofdistricts 
 VotesColumnChart(authVotersDistrict[["authAll"]], 
                  filename=paste0(environment[["folderImages"]], "barAuthAllDisAbs"), 
                  colors="cyan", 
@@ -119,7 +119,7 @@ VotesColumnChart(authVotersDistrict[["authAll"]],
                  title="Wahlberechtigt Bezirke", 
                  output=T, png=T, svg=T, pdf=T)
 
-# all votes districts (abs)
+# all votes in districts (abs)
 VotesColumnChart(participationDistrict[["allVotes"]], 
                  filename=paste0(environment[["folderImages"]], "barAllVotesDisAbs"), 
                  colors="cyan", 
@@ -215,9 +215,8 @@ CalculateCorrelation(votesParishEleDay[, 3:13], votesDistrict[, 2:12],
                      colors=city[["partycolors"]],
                      legend=F, output=T, png=T, svg=T, pdf=T)
 
-# Prepare data for left / right Mur Ufer
 
-left <- city[["leftMurNumDistricts"]]
+# Prepare data for left / right Mur Ufer
 votesParishEleDay[which(votesParishEleDay[, "numDistrict"]  == 1), "ufer"] <- "left"
 votesParishEleDay[which(votesParishEleDay[, "numDistrict"]  == 2), "ufer"] <- "left"
 votesParishEleDay[which(votesParishEleDay[, "numDistrict"]  == 3), "ufer"] <- "left"
@@ -237,30 +236,74 @@ votesParishEleDay[which(votesParishEleDay[, "numDistrict"]  == 16), "ufer"] <- "
 votesParishEleDay[which(votesParishEleDay[, "numDistrict"]  == 17), "ufer"] <- "right"
 votesParishEleDay$ufer <- as.factor(votesParishEleDay$ufer)
 
-# analyses[["maxCorCoeff"]] <- apply(abs(corCoeff), 1, max, na.rm=TRUE)
-# pos <- apply(corCoeff, 1, max, na.rm=TRUE)
-# neg <- apply(corCoeff, 1, min, na.rm=TRUE)
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 1), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 2), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 3), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 6), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 7), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 8), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 9), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 10), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 11), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 12), "ufer"] <- "left"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 4), "ufer"] <- "right"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 5), "ufer"] <- "right"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 13), "ufer"] <- "right"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 14), "ufer"] <- "right"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 15), "ufer"] <- "right"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 16), "ufer"] <- "right"
+participationParishEleDay[which(participationParishEleDay[, "numDistrict"]  == 17), "ufer"] <- "right"
+participationParishEleDay$ufer <- as.factor(participationParishEleDay$ufer)
 
-
-# parishes distribution every party solely
+# parishes votes distribution every party solely between the left and right murufer (relative)
 for(i in seq_along(1:city[["numParties"]])) {
-  # absolute 
-  BoxplotLR(votesParishEleDay[, 2+i], votesParishEleDay[, "ufer"],
-          filename=paste0(environment[["folderImages"]], "box", city[["partyAcrIT"]][i], "ufer"), 
-          colors=city[["partycolors"]][i], 
-          names=levels(votesParishEleDay[, "ufer"]),
-          title=paste0("Unterschied Verteilung nach Murufer ", city[["partyAcrAT"]][i], " (abs)"),
-          legend=F, output=T, svg=T, pdf=T, png=T)
+  BoxplotLR(votesParishEleDay[, 2+i], 
+            votesParishEleDay[, "ufer"],
+            filename=paste0(environment[["folderImages"]], "box", city[["partyAcrIT"]][i], "UferAbs"), 
+            colors=city[["partycolors"]][i], 
+            names=levels(votesParishEleDay[, "ufer"]),
+            title=paste0("Verteilung nach Murufer ", city[["partyAcrAT"]][i], " (abs)"),
+            legend=F, output=T, svg=T, pdf=T, png=T)
 }
 
+# parishes votes distribution every party solely between the left and right murufer (relative)
+for(i in seq_along(1:city[["numParties"]])) {
+    BoxplotLR(votesParishEleDay[, 13+i], 
+              votesParishEleDay[, "ufer"],
+              filename=paste0(environment[["folderImages"]], "box", city[["partyAcrIT"]][i], "UferRel"), 
+              colors=city[["partycolors"]][i], 
+              names=levels(votesParishEleDay[, "ufer"]),
+              title=paste0("Verteilung nach Murufer ", city[["partyAcrAT"]][i], " (rel)"),
+              legend=F, output=T, svg=T, pdf=T, png=T)
+}
 
-# party results of city (rel)
-VotesColumnChart(city[["votesPartiesRel"]], 
-                 filename=paste0(environment[["folderImages"]], "barPartiesCityRel"), 
-                 colors=city[["partycolors"]], 
-                 names=city[["partyAcrAT"]], 
-                 title="Ergebnis Parteien (rel)", 
-                 output=T, png=T, svg=T, pdf=T)
+# election participation comparision between left and right murufer (rel)
+BoxplotLR(participationParishEleDay[, "allVotes"], 
+          participationParishEleDay[, "ufer"],
+          filename=paste0(environment[["folderImages"]], "boxElePartRel"), 
+          colors="cyan", 
+          names=levels(votesParishEleDay[, "ufer"]),
+          title="Verteilung Wahlbeteiligung in Sprengel nach Murufer (abs)",
+          legend=F, output=T, svg=T, pdf=T, png=T)
+
+# election participation comparision between left and right murufer (abs)
+BoxplotLR(participationParishEleDay[, "electionPartRel"], 
+          participationParishEleDay[, "ufer"],
+          filename=paste0(environment[["folderImages"]], "boxElePartAbs"), 
+          colors="cyan", 
+          names=levels(votesParishEleDay[, "ufer"]),
+          title=paste0("Verteilung Wahlbeteiligung in Sprengel nach Murufer (rel)"),
+          legend=F, output=T, svg=T, pdf=T, png=T)
+
+# unvalid votes comparision between left and right murufer (abs)
+BoxplotLR(participationParishEleDay[, "unvalidVotesRel"], 
+          participationParishEleDay[, "ufer"],
+          filename=paste0(environment[["folderImages"]], "boxUnvalidVotesParRel"), 
+          colors="cyan", 
+          names=levels(votesParishEleDay[, "ufer"]),
+          title=paste0("Verteilung ungültige Stimmen in Sprengel nach Murufer (rel)"),
+          legend=F, output=T, svg=T, pdf=T, png=T)
+
 
 
 

@@ -150,6 +150,7 @@ VotesColumnChart <- function(data, filename, colors, names, title, legend=F, out
   if(output) {
 
     barplot(data, col=colors, names=names, main=title)
+    mtext(data)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -397,7 +398,7 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson"
                              filename=paste0(folder, "barCorr", namesIT[i], methAcr, "ParAbs"), 
                              colors=colors, 
                              names=namesAT,
-                             title=paste0(methName, " Korrelationen Sprengel-Stimmen von ", namesAT[i], " (abs)"), 
+                             title=paste0(methName, " Korrelationen von ", namesAT[i], " in Sprengel (abs)"), 
                              legend=legend, output=output, png=png, svg=svg, pdf=pdf)
       
       # district
@@ -405,7 +406,7 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson"
                              filename=paste0(folder, "barCorr", namesIT[i], methAcr, "DisAbs", methAcr), 
                              colors=colors, 
                              names=namesAT,
-                             title=paste0(methName, " Korrelationen Bezirk-Stimmen von ", namesAT[i], " (abs)"), 
+                             title=paste0(methName, " Korrelationen von ", namesAT[i], " in Bezirke (abs)"), 
                              legend=legend, output=output, png=png, svg=svg, pdf=pdf)
     }
     
@@ -426,47 +427,47 @@ WriteCSV <- function(data, filename, folder = "QGIS", enc = "UTF-8") {
   write.csv2(data, paste0(folder, "/", filename, "_semicolon[", enc, "].csv"), fileEncoding = enc)
 }
 
-BoxplotLR <- function(data, filename, colSeg, colors, names, title, legend=F, output=T, svg=F, pdf=F, png=F) {
+BoxplotLR <- function(data, colSeg, filename, colors, names, title, legend=F, output=T, svg=F, pdf=F, png=F) {
   
   # output to the console
   if(output) {
     boxplot(data ~ colSeg, col=colors, names=names)
     title(title)
   }
-    # export png
-    if(png) {
-      png(file=paste0(filename, ".png"), height=400, width=600)
-      boxplot(data ~ colSeg, col=colors, names=names)
+ 
+  # export png
+  if(png) {
+    png(file=paste0(filename, ".png"), height=400, width=600)
+    boxplot(data ~ colSeg, col=colors, names=names)
       
-      if(legend) {
-        legend("topright", names, fill=colors)
-      }
-      
-      title(title)
-      dev.off()  
+    if(legend) {
+      legend("topright", names, fill=colors)
     }
+      
+    title(title)
+    dev.off()  
+  }
     
-    # export svg
-    if(svg) {
-      svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
-      boxplot(data ~ colSeg, col=colors, names=names)
+  # export svg
+  if(svg) {
+    svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
+    boxplot(data ~ colSeg, col=colors, names=names)
       
-      if(legend) {
-        legend("topright", names, fill=city[["partycolors"]])
-      }
-      
-      title(title)
-      dev.off()  
+    if(legend) {
+      legend("topright", names, fill=city[["partycolors"]])
     }
+      
+    title(title)
+    dev.off()  
+  }
     
-    # export pdf
-    if(pdf) {
-      
-      boxplot(data ~ colSeg, col=colors, names=names)
-      if(legend) {
-        legend("topright", names, fill=colors)
-      }
-      title(title)
-      dev.copy2pdf(file=paste0(filename, ".pdf"))
+  # export pdf
+  if(pdf) {
+    boxplot(data ~ colSeg, col=colors, names=names)
+    if(legend) {
+      legend("topright", names, fill=colors)
     }
+    title(title)
+    dev.copy2pdf(file=paste0(filename, ".pdf"))
+  }
 }

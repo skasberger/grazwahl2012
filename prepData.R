@@ -54,6 +54,7 @@ environment[["folderDataRawCSV"]] <- paste0(environment[["workDir"]], "data/raw/
 environment[["folderDataRawR"]] <- paste0(environment[["workDir"]], "data/raw/rstat/")
 environment[["folderDataJSON"]] <- paste0(environment[["workDir"]], "data/json/")
 environment[["folderDataR"]] <- paste0(environment[["workDir"]], "data/rstat/")
+environment[["functions.R"]] <- paste0(environment[["workDir"]], "functions.R")
 
 # partycolors
 # kpö cc3333, fpö 0e428e, spö ce000c, green 87b52a, piraten 4c2582, bzö ee7f00
