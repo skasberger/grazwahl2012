@@ -33,7 +33,7 @@ library(RJSONIO)
 library(stringr)
 
 # load functions
-source("functions.R")
+source("code/rstat/functions.R")
 
 # set city data
 city <- list()
@@ -44,20 +44,19 @@ city[["nameDistricts"]] <-c("Innere Stadt", "St. Leonhard", "Geidorf", "Lend", "
                     "Andritz", "Gösting", "Eggenberg", "Wetzelsdorf", "Straßgang", "Puntigam")
 city[["numDistricts"]] <- length(city[["nameDistricts"]])
 city[["numParties"]] <- 11L
-city[["leftMurNumDistricts"]] <- c(1, 2, 3, 6, 7, 8, 9, 10, 11, 12)
-city[["rightMurNumDistricts"]] <- c(4, 5, 13, 14, 15, 16, 17)
+city[["leftMurDistricts"]] <- c(1, 2, 3, 6, 7, 8, 9, 10, 11, 12)
+city[["rightMurDistricts"]] <- c(4, 5, 13, 14, 15, 16, 17)
 
 # set environment data
-environment[["workDir"]] <- paste0(getwd(), "/")
-environment[["folderData"]] <- paste0(environment[["workDir"]], "data/")
-environment[["folderDataRawCSV"]] <- paste0(environment[["workDir"]], "data/raw/csv/")
-environment[["folderDataRawR"]] <- paste0(environment[["workDir"]], "data/raw/rstat/")
-environment[["folderDataJSON"]] <- paste0(environment[["workDir"]], "data/json/")
-environment[["folderDataR"]] <- paste0(environment[["workDir"]], "data/rstat/")
-environment[["functions.R"]] <- paste0(environment[["workDir"]], "functions.R")
+environment[["homeDir"]] <- getwd()
+environment[["folderData"]] <- paste0(environment[["homeDir"]], "/data")
+environment[["folderDataRawCSV"]] <- paste0(environment[["homeDir"]], "/data/raw/csv")
+environment[["folderDataJSON"]] <- paste0(environment[["homeDir"]], "/data/json")
+environment[["folderDataR"]] <- paste0(environment[["homeDir"]], "/data/rstat")
+environment[["functions.R"]] <- paste0(environment[["homeDir"]], "/code/rstat/functions.R")
 
 # partycolors
-# kpö cc3333, fpö 0e428e, spö ce000c, green 87b52a, piraten 4c2582, bzö ee7f00
+# kpö = cc3333, fpö = 0e428e, spö = ce000c, green = 87b52a, piraten = 4c2582, bzö = ee7f00
 city[["partycolors"]] <- c("#ce000c", "#666666", "#0e428e", "#87b52a", "#cc3333", "#ee7f00", "#ffffff", "#4c2582", "#ffffff", "#ffffff", "#ffffff")
 names(city[["partycolors"]]) <- city[["acrParties"]]
 
@@ -72,12 +71,12 @@ city[["partyAcrRel"]] <- c("SPOErel", "OEVPrel", "FPOErel", "GRUENErel", "KPOEre
 
 
 # open votes of parishes
-rawVotesParish <- read.csv2(paste0( environment[["folderDataRawCSV"]], "GRW2012_Sprengelerg.csv" ), fileEncoding = "iso-8859-1",
+rawVotesParish <- read.csv2(paste0( environment[["folderDataRawCSV"]], "/GRW2012_Sprengelerg.csv" ), fileEncoding = "iso-8859-1",
                             col.names=c("eleShortName", "numParish", "acrParty", "nameParty", "list", "allVotes", 
                                         "unvalidVotes", "validVotes", "votes", "numParishes", "", ""))
 
 # open authorized voters of parishes
-rawAuthVotersParish <- read.csv2(paste0(  environment[["folderDataRawCSV"]], "GRW2012_Wahlberechtigte.csv" ), fileEncoding = "iso-8859-1", 
+rawAuthVotersParish <- read.csv2(paste0(  environment[["folderDataRawCSV"]], "/GRW2012_Wahlberechtigte.csv" ), fileEncoding = "iso-8859-1", 
                          col.names=c("eleShortName", "numParish", "authAll", "authMen", "authWomen"))
 
 # save participation data
@@ -90,8 +89,8 @@ authVotersParish <- rawAuthVotersParish[, c("numParish", "authAll", "authMen", "
 votesParishAll <- rawVotesParish[, c("numParish", "acrParty", "votes")]
 
 # save raw data as RDA file
-environment[["filenameRawRDA"]] <- "grazwahl.rda"
-save(rawAuthVotersParish, rawVotesParish, file=paste0(environment[["folderDataRawR"]], environment[["filenameRawRDA"]]))
+environment[["filenameRawRDA"]] <- "grazwahlRAW.rda"
+save(rawAuthVotersParish, rawVotesParish, file=paste0(environment[["folderDataR"]], "/", environment[["filenameRawRDA"]]))
 
 rm(rawAuthVotersParish, rawVotesParish)
 
@@ -129,7 +128,7 @@ votesParishAllPP1 <- votesParishAll
 
 environment[["filenameDataPP1"]] <- "grazwahlPP1.rda"
 save(list=c("votesParishAllPP1", "participationParishAllPP1", "authVotersParishPP1"), 
-     file=paste0(environment[["folderDataR"]], environment[["filenameDataPP1"]]))
+     file=paste0(environment[["folderDataR"]], "/", environment[["filenameDataPP1"]]))
 rm(votesParishAllPP1, participationParishAllPP1, authVotersParishPP1)
 # load(file=paste0(environment[["folderDataR"]], environment[["filenameDataPP1"]]))
 
@@ -215,17 +214,17 @@ participationDistrict <- data.frame(numDistrict=1:17, allVotes=allVotes, validVo
 rm(allVotes, validVotesAbs, unvalidVotesAbs, validVotesRel, unvalidVotesRel, electionParticipation)
 
 # get absolute votes for every party for districts
-temp1 <- tapply(votesParishEleDay[, 3], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp2 <- tapply(votesParishEleDay[, 4], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp3 <- tapply(votesParishEleDay[, 5], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp4 <- tapply(votesParishEleDay[, 6], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp5 <- tapply(votesParishEleDay[, 7], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp6 <- tapply(votesParishEleDay[, 8], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp7 <- tapply(votesParishEleDay[, 9], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp8 <- tapply(votesParishEleDay[, 10], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp9 <- tapply(votesParishEleDay[, 11], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp10 <- tapply(votesParishEleDay[, 12], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
-temp11 <- tapply(votesParishEleDay[, 13], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE)
+temp1 <- as.numeric(tapply(votesParishEleDay[, 3], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp2 <- as.numeric(tapply(votesParishEleDay[, 4], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp3 <- as.numeric(tapply(votesParishEleDay[, 5], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp4 <- as.numeric(tapply(votesParishEleDay[, 6], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp5 <- as.numeric(tapply(votesParishEleDay[, 7], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp6 <- as.numeric(tapply(votesParishEleDay[, 8], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp7 <- as.numeric(tapply(votesParishEleDay[, 9], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp8 <- as.numeric(tapply(votesParishEleDay[, 10], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp9 <- as.numeric(tapply(votesParishEleDay[, 11], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp10 <- as.numeric(tapply(votesParishEleDay[, 12], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
+temp11 <- as.numeric(tapply(votesParishEleDay[, 13], votesParishEleDay[["numDistrict"]], sum, simplify = TRUE))
 
 votesDistrict <- data.frame(numDistrict=1:17, SPOEabs=temp1, OEVPabs=temp2, FPOEabs=temp3, GRUENEabs=temp4, KPOEabs=temp5, BZOEabs=temp6, 
                                   CP=temp7, PIRATabs=temp8, ESKabs=temp9, BBBabs=temp10, WIRabs=temp11)
@@ -263,7 +262,7 @@ city[["votesPartiesRel"]] <- city[["votesPartiesAbs"]] / city[["validVotesAbs"]]
 authVotersParish <- authVotersParish[!(authVotersParish[["numParish"]] == 2798 | authVotersParish[["numParish"]] == 2799), ]
 
 environment[["filenameDataPP2"]] <- "grazwahlPP2.rda"
-save(list=ls(), file=paste0(environment[["folderDataR"]], environment[["filenameDataPP2"]]))
+save(list=ls(), file=paste0(environment[["folderDataR"]], "/", environment[["filenameDataPP2"]]))
 # load()
 
 
@@ -285,6 +284,7 @@ for(i in seq_along(jsonFiles)) {
   SaveJSON(jsonFiles[i])
 }
 
+rm(list=ls())
 
 
 

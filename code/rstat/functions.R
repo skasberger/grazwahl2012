@@ -73,7 +73,7 @@ TransformVotes <- function(data, colVotes, colParty, numParties) {
 #
 
 SaveJSON <- function(data) {
-  filename <- paste0(environment[["folderDataJSON"]], names(data), ".json")
+  filename <- paste0(environment[["folderDataJSON"]], "/", names(data), ".json")
   write(data[[1]],filename)
 }
 
@@ -85,49 +85,55 @@ SaveJSON <- function(data) {
 #
 
 
-Boxplot <- function(data, filename, colors, names, title, legend=F, output=T, svg=F, pdf=F, png=F) {
-
+Boxplot <- function(data, filename, colors, names, title, yaxis, legend=F, output=T, svg=F, pdf=F, png=F) {
+  
   # output to the console
   if(output) {
-    boxplot(data, col=colors, names=names)
+    boxplot(data, col=colors, names=names, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
     }
     
     title(title)
+    dev.off()
   }
   
   # export png
   if(png) {
     png(file=paste0(filename, ".png"), height=400, width=600)
-    boxplot(data, col=colors, names=names)
+    boxplot(data, col=colors, names=names, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
     }
     
     title(title)
-    dev.off()  
+    dev.off()
   }
   
   # export svg
   if(svg) {
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
-    boxplot(data, col=colors, names=names)
-
+    boxplot(data, col=colors, names=names, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    
     if(legend) {
       legend("topright", names, fill=city[["partycolors"]])
     }
     
     title(title)
-    dev.off()  
+    dev.off()
   }
   
   # export pdf
   if(pdf) {
     
-    boxplot(data, col=colors, names=names)
+    boxplot(data, col=colors, names=names, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+
     if(legend) {
       legend("topright", names, fill=colors)
     }
@@ -144,51 +150,59 @@ Boxplot <- function(data, filename, colors, names, title, legend=F, output=T, sv
 #
 
 
-VotesColumnChart <- function(data, filename, colors, names, title, legend=F, output=T, png=F, svg=F, pdf=F) {
-
+VotesColumnChart <- function(data, filename, colors, names, title, yaxis, shift, legend=F, output=T, png=F, svg=F, pdf=F) {
+  
   # output to the console
   if(output) {
-
-    barplot(data, col=colors, names=names, main=title)
-    mtext(data)
+    
+    bp <- barplot(data, col=colors, names=names, main=title, ylab=yaxis)
+    text(x = bp, y=data + shift , labels=as.character(round(data, digits=2)), xpd=TRUE)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
     }
     title(title)
-    dev.off()  
+    dev.off()
   }
   
+  round
   # export png
   if(png) {
     png(file=paste0(filename, ".png"), height=400, width=600)
     
-    barplot(data, col=colors, names=names, main=title)
+    bp <- barplot(data, col=colors, names=names, main=title, ylab=yaxis)
+    text(x = bp, y=data + shift , labels=as.character(round(data, digits=2)), xpd=TRUE)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
     }
     title(title)
-    dev.off()  
+    dev.off()
   }
   
   # export svg
   if(svg) {
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
     
-    barplot(data, col=colors, names=names, main=title)
+    bp <- barplot(data, col=colors, names=names, main=title, ylab=yaxis)
+    text(x = bp, y=data + shift , labels=as.character(round(data, digits=2)), xpd=TRUE)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
     }
     title(title)
-    dev.off()  
+    dev.off()
   }
   
   # export pdf
   if(pdf) {
     
-    barplot(data, col=colors, names=names, main=title)
+    bp <- barplot(data, col=colors, names=names, main=title, ylab=yaxis)
+    text(x = bp, y=data + shift , labels=as.character(round(data, digits=2)), xpd=TRUE)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -196,71 +210,6 @@ VotesColumnChart <- function(data, filename, colors, names, title, legend=F, out
     title(title)
     dev.copy2pdf(file=paste0(filename, ".pdf"))
   }
-}
-
-
-#
-# DESCRIPTION
-#
-# variables
-#
-
-
-CorrelationColumnChart <- function(data, filename, colors, names, title, legend=F, output=T, png=F, svg=F, pdf=F) {
-  
-  # output to the console
-  if(output) {
-    
-    barplot(data, col=colors, names=names, main=title)
-    abline(h=mean(data), col="gray", lwd=2)  
-    
-    if(legend) {
-      legend("topright", names, fill=colors)
-    }
-    title(title)
-    dev.off()  
-  }
-  
-  # export png
-  if(png) {
-    png(file=paste0(filename, ".png"), height=400, width=600)
-    
-    barplot(data, col=colors, names=names, main=title)
-    abline(h=mean(data), col="gray", lwd=2)  
-    
-    if(legend) {
-      legend("topright", names, fill=colors)
-    }
-    title(title)
-    dev.off()  
-  }
-  
-  # export svg
-  if(svg) {
-    svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
-    
-    barplot(data, col=colors, names=names, main=title)
-    abline(h=mean(data), col="gray", lwd=2)  
-    
-    if(legend) {
-      legend("topright", names, fill=colors)
-    }
-    title(title)
-    dev.off()  
-  }
-  
-  # export pdf
-  if(pdf) {
-    
-    barplot(data, col=colors, names=names, main=title)
-    
-    if(legend) {
-      legend("topright", names, fill=colors)
-    }
-    title(title)
-    dev.copy2pdf(file=paste0(filename, ".pdf"))
-  }
-  
 }
 
 
@@ -276,7 +225,8 @@ Histogram <- function(data, filename, colors, title, xaxis, yaxis, output=T, png
   if(output) {
     
     hist(data, col=colors, breaks=100, main=title, xlab=xaxis, ylab=yaxis)
-    dev.off()  
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    dev.off()
   }
   
   # export png
@@ -284,7 +234,8 @@ Histogram <- function(data, filename, colors, title, xaxis, yaxis, output=T, png
     png(file=paste0(filename, ".png"), height=400, width=600)
     
     hist(data, col=colors, breaks=100, main=title, xlab=xaxis, ylab=yaxis)
-    dev.off()  
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    dev.off()
   }
   
   # export svg
@@ -292,13 +243,15 @@ Histogram <- function(data, filename, colors, title, xaxis, yaxis, output=T, png
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
     
     hist(data, col=colors, breaks=100, main=title, xlab=xaxis, ylab=yaxis)
-    dev.off()  
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    dev.off()
   }
   
   # export pdf
   if(pdf) {
     
     hist(data, col=colors, breaks=100, main=title, xlab=xaxis, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
     dev.copy2pdf(file=paste0(filename, ".pdf"))
   }
   
@@ -311,35 +264,38 @@ Histogram <- function(data, filename, colors, title, xaxis, yaxis, output=T, png
 # variables
 #
 
-DensityPlot <- function(data, filename, color, title, output=T, png=F, svg=F, pdf=F) {
+DensityPlot <- function(data, filename, color, title, yaxis, output=T, png=F, svg=F, pdf=F) {
   
   # output to the console
   if(output) {
-    plot(data,lwd=3,col=color, main=title)  
-    dev.off()  
+    plot(data,lwd=3,col=color, main=title, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    dev.off()
   }
   
   # export png
   if(png) {
     png(file=paste0(filename, ".png"), height=400, width=600)
-    plot(data,lwd=3,col=color, main=title)
-    dev.off()  
+    plot(data,lwd=3,col=color, main=title, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    dev.off()
   }
   
   # export svg
   if(svg) {
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
-    plot(data,lwd=3,col=color, main=title)
-    dev.off()  
+    plot(data,lwd=3,col=color, main=title, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    dev.off()
   }
   
   # export pdf
   if(pdf) {
-    plot(data,lwd=3,col=color, main=title)
+    plot(data,lwd=3,col=color, main=title, ylab=yaxis)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
     dev.copy2pdf(file=paste0(filename, ".pdf"))
   }
 }
-
 
 #
 # DESCRIPTION
@@ -347,7 +303,7 @@ DensityPlot <- function(data, filename, color, title, output=T, png=F, svg=F, pd
 # variables
 #
 
-CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson", folder, colors, namesIT, namesAT, legend=F, output=T, png=F, svg=F, pdf=F) {
+CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson", folder, colors, namesIT, namesAT, yaxis, legend=F, output=T, png=F, svg=F, pdf=F) {
   
   if(dim(dataParish)[2] & length(names) & dim(dataDistrict)[2]) {
     
@@ -365,21 +321,10 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson"
       }
     }
     
-    corCoefDisOne <- corCoefDis
-    corCoefParOne <- corCoefPar
-    
     for(i in seq_along(1:numParties)) {
-      corCoefDisOne[i, i] <- 1
-      corCoefParOne[i, i] <- 1
+      corCoefDis[i, i] <- 1
+      corCoefPar[i, i] <- 1
     }
-    
-    corCoefPar <- data.frame(corCoefPar)
-    names(corCoefPar) <- namesIT
-    row.names(corCoefPar) <- namesIT
-    
-    corCoefDis <- data.frame(corCoefDis)
-    names(corCoefDis) <- namesIT
-    row.names(corCoefDis) <- namesIT
     
     if(corrMethod == "pearson") {
       methName <- "Pearson"
@@ -394,7 +339,7 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson"
     # plot correlations as barplots for every party
     for(i in seq_along(1:numParties)) {
       # parish
-      CorrelationColumnChart(corCoefParOne[i,], 
+      CorrelationColumnChart(corCoefPar[i,], 
                              filename=paste0(folder, "barCorr", namesIT[i], methAcr, "ParAbs"), 
                              colors=colors, 
                              names=namesAT,
@@ -402,7 +347,7 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson"
                              legend=legend, output=output, png=png, svg=svg, pdf=pdf)
       
       # district
-      CorrelationColumnChart(corCoefDisOne[i,], 
+      CorrelationColumnChart(corCoefDis[i,], 
                              filename=paste0(folder, "barCorr", namesIT[i], methAcr, "DisAbs", methAcr), 
                              colors=colors, 
                              names=namesAT,
@@ -415,7 +360,82 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson"
     print("Error: Length of names vector is not the same as number of columns in the dataset!")
   } 
 }
+
+
+#
+# DESCRIPTION
+#
+# variables
+#
+
+
+CorrelationColumnChart <- function(data, filename, colors, names, title, legend=F, output=T, png=F, svg=F, pdf=F) {
+  colText <- data
+  colText[data<0] <- 0
+  # output to the console
+  if(output) {
+    
+    bp <- barplot(data, col=colors, names=names, main=title, ylab="Korrelationskoeffizient")
+    abline(h=mean(data), col="gray", lwd=2)
+    text(x = bp, y=colText + 0.05 , labels=as.character(round(data, digits=2)), xpd=TRUE)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    
+    if(legend) {
+      legend("topright", names, fill=colors)
+    }
+    title(title)
+    dev.off()
+  }
   
+  # export png
+  if(png) {
+    png(file=paste0(filename, ".png"), height=400, width=600)
+    
+    bp <- barplot(data, col=colors, names=names, main=title, ylab="Korrelationskoeffizient")
+    abline(h=mean(data), col="gray", lwd=2)
+    text(x = bp, y=colText + 0.05 , labels=as.character(round(data, digits=2)), xpd=TRUE)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    
+    if(legend) {
+      legend("topright", names, fill=colors)
+    }
+    title(title)
+    dev.off()
+  }
+  
+  # export svg
+  if(svg) {
+    svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
+    
+    bp <- barplot(data, col=colors, names=names, main=title, ylab="Korrelationskoeffizient")
+    abline(h=mean(data), col="gray", lwd=2)
+    text(x = bp, y=colText + 0.05 , labels=as.character(round(data, digits=2)), xpd=TRUE)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    
+    if(legend) {
+      legend("topright", names, fill=colors)
+    }
+    title(title)
+    dev.off()
+  }
+  
+  # export pdf
+  if(pdf) {
+    
+    bp <- barplot(data, col=colors, names=names, main=title, ylab="Korrelationskoeffizient")
+    abline(h=mean(data), col="gray", lwd=2)
+    text(x = bp, y=colText + 0.05 , labels=as.character(round(data, digits=2)), xpd=TRUE)
+    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    
+    if(legend) {
+      legend("topright", names, fill=colors)
+    }
+    title(title)
+    dev.copy2pdf(file=paste0(filename, ".pdf"))
+  }
+  
+}
+
 #
 # DESCRIPTION
 #
@@ -427,40 +447,41 @@ WriteCSV <- function(data, filename, folder = "QGIS", enc = "UTF-8") {
   write.csv2(data, paste0(folder, "/", filename, "_semicolon[", enc, "].csv"), fileEncoding = enc)
 }
 
-BoxplotLR <- function(data, colSeg, filename, colors, names, title, legend=F, output=T, svg=F, pdf=F, png=F) {
+BoxplotLR <- function(data, colSeg, filename, colors, names, title, yaxis, legend=F, output=T, svg=F, pdf=F, png=F) {
   
   # output to the console
   if(output) {
     boxplot(data ~ colSeg, col=colors, names=names)
     title(title)
+    dev.off()
   }
- 
+  
   # export png
   if(png) {
     png(file=paste0(filename, ".png"), height=400, width=600)
     boxplot(data ~ colSeg, col=colors, names=names)
-      
+    
     if(legend) {
       legend("topright", names, fill=colors)
     }
-      
-    title(title)
-    dev.off()  
-  }
     
+    title(title)
+    dev.off()
+  }
+  
   # export svg
   if(svg) {
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
     boxplot(data ~ colSeg, col=colors, names=names)
-      
+    
     if(legend) {
       legend("topright", names, fill=city[["partycolors"]])
     }
-      
-    title(title)
-    dev.off()  
-  }
     
+    title(title)
+    dev.off()
+  }
+  
   # export pdf
   if(pdf) {
     boxplot(data ~ colSeg, col=colors, names=names)
@@ -471,3 +492,5 @@ BoxplotLR <- function(data, colSeg, filename, colors, names, title, legend=F, ou
     dev.copy2pdf(file=paste0(filename, ".pdf"))
   }
 }
+
+

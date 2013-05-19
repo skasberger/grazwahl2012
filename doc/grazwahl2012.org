@@ -42,16 +42,20 @@ Standard Format/Struktur überlegen
 - semantisch machen
 ** DOKUMENTATION
 * UMSETZUNG ANALYSE GRAZWAHLEN 2012
-** 0.1 - DATENVORBEREITUNG
+** 0.1 - Datenaufbereitung & Diagramme
 # todo
-- urheberrecht zu grafiken adden
+- Einwohner, Fläche, Einwohnerdichte pro Bezirk adden
+- Copyright adden
+- Korrelation = 1 Variable löschen
+- Fix JSON Export
+- Überschriften verbessern
+- export der fertigen datensets als CSV
+- Durchschnittswerte berechnen: 
+  - gültige, gesamte, ungültige Stimmen pro Sprengel/Bezirk
+  - Wahlberechtigte pro Sprengel/Bezirk
+  - Anzahl Sprengel pro Bezirk
 - auf datengrundlage in finalen werken und in der doku hinweisen: aggragierte daten der sprengel auf bezirksebene sind nur die stimmen vom wahltag selber!
-- Lizenzen in ordnern kopieren
 - dokumentieren der datenstruktur 
-- Erkenntnisse über Rohdaten und die Datenstruktur der Rohdaten bloggen: datenübersicht in libre office calc => vergleich mit website, addieren der spalten/werte
-- tarballs anbieten
-- nummern zu säulendiagrammen hinzufügen
-- varianzen der korrelationen
 *** ANFORDERUNGEN
 - Korrigieren von Fehlern im Datensatz
 - Aufbereiten der Rohdaten für die weitere Verwendung
@@ -64,77 +68,7 @@ Standard Format/Struktur überlegen
 - Verteilungen visualisieren mit Boxplots, Dichefunktions Plots und Histogrammen
 - Ergebnis visualisieren mittels Söulendiagramme
 *** DOKUMENTATION
-Redundanter Code wurde zum Ende hin mittels Funktionen stark reduziert und die Verwendung und weitere Nutzung dadurch stark vereinfacht. Ins besondere wurden Funktionen 
-für das automatische Speichern der Plots in unterschiedliche Dateiformate geschrieben und die Dateneingabe zur Berechnung der Korrelationen mitsamt Säulendiagramme klar definiert.
-
-Big 6 werden hier wie folgt die 6 Parteien die es in den Gemeinderat geschafft haben genannt.
-
-**** ORGANISATION
-- Lizenz Texte wurden in Ordner gegeben
-- passende Ordner Struktur gefunden:
-  - data
-    - raw
-      - shape
-      - csv
-      - rstat
-    - json
-    - rstat
-    - shape
-  - images
-  - doc
-**** FACTS
-besondere Stimmen
-- 816: vorgezogenen Wahltag am 16. November 2012; Seniorenpflegeheim mit um die 80 Stimmabgaben am Tag der Wahl
-- 2798: Briefwahlstimmen 
-- 2799: am Wahltag in Wahlkartenwahllokalen oder vor einer besonderen Wahlbehörde verwendeten Wahlkarten (z.B. Hausbesuche)
-
-Die Vorwahlen sind unter dem Sprengel 816 eingetragen
-http://www.graz.at/cms/beitrag/10203278/4829113/
-Inkonsistenz in Daten: es waren anscheinend um die 8000 vorgezogene Wahlen
-
-**** DICTIONARY
-- Sprengel = parish
-- Bezirk = district
-- berechtigte WählerInnen = authorized voters
-- Wahlbeteiligung = voters participation
-
-**** RAW DATA
-# data check ergebnis
-- Parteien sind nach dem Listenplatz in allen Datensätzen geordnet
-
-# File Encoding alle Dateien
-FILETYPES
-fileinfo
-2003_grw_sprengelbezerg.csv:  ISO-8859 text
-2003_grw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
-2005_ltw_sprengelbezerg.csv:  ISO-8859 text
-2005_ltw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
-2006_nrw_sprengelbezerg.csv:  ISO-8859 text
-2006_nrw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
-2008_grw_sprengelbezerg.csv:  ISO-8859 text
-2008_grw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
-2008_nrw_sprengelbezerg.csv:  ISO-8859 text
-2008_nrw_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
-ltw_2010_sprengelbezerg.csv:  ISO-8859 text
-ltw_2010_sprengelerg.csv:     ISO-8859 text, with CRLF line terminators
-ltw_2010_sprengel_wahlbe.csv: ASCII text, with CRLF line terminators
-! auch die neuen der GRW2012 sind ISO-8859 !
-
-mime-encoding (charset)
-2003_grw_sprengelbezerg.csv:  iso-8859-1
-2003_grw_sprengelerg.csv:     iso-8859-1
-2005_ltw_sprengelbezerg.csv:  iso-8859-1
-2005_ltw_sprengelerg.csv:     iso-8859-1
-2006_nrw_sprengelbezerg.csv:  iso-8859-1
-2006_nrw_sprengelerg.csv:     iso-8859-1
-2008_grw_sprengelbezerg.csv:  iso-8859-1
-2008_grw_sprengelerg.csv:     iso-8859-1
-2008_nrw_sprengelbezerg.csv:  iso-8859-1
-2008_nrw_sprengelerg.csv:     iso-8859-1
-ltw_2010_sprengelbezerg.csv:  iso-8859-1
-ltw_2010_sprengelerg.csv:     iso-8859-1
-ltw_2010_sprengel_wahlbe.csv: us-ascii
-
+**** DATEN
 ***** GRW2012_Sprengelbezerg.csv
 Stimmen der Parteien aus allen 17 Bezirken. 
 
@@ -177,6 +111,7 @@ Header
 - Bezirke: 17
 
 Die Daten wurden mit den Sprengeldaten verglichen. Ergebnis: Die Daten sind ident mit den Daten aus GRW2012_Sprengelerg.csv aus den Bezirken (also ohne 2798 und 2799).
+
 ***** GRW2012_Sprengelerg.csv
 Stimmen für die Parteien aus allen 272 Sprengeln.
 Die Abkuerzung fuer das Einsparkraftwerk fehlt.
@@ -241,8 +176,6 @@ Header
 - wahlbe_mann => Wahlberechtigte Maenner
 - wahlbe_frau => Wahlberechtigte Frauen
 
-**** PROCESSED DATA
-- Wichtig ist dabei, dass alle Verarbeitungen und Berechnungen auf den atomarsten Datensätzen zu grundeliegen, den Ergebnissen auf Sprengelebene
 ***** Wahlbeteiligung Sprengel
 1) Gesamt
 2) Wahltag: ohne Sprengel 816, 2798, 2799
@@ -253,6 +186,7 @@ Header
 - abgegebene Stimmen abs+rel
 - gültige Stimmen abs+rel
 - ungültige Stimmen abs+rel
+
 ***** Wahlbeteiligung Bezirk
 nur Wahltag
 
@@ -261,6 +195,7 @@ nur Wahltag
 - abgegebene Stimmen abs+rel
 - gültige Stimmen abs+rel
 - ungültige Stimmen abs+rel
+
 ***** Wahlberechtigung Sprengel
 
 - Gesamte Stimmen
@@ -272,6 +207,7 @@ nur Wahltag
 - Wahlberechtigte Gesamt
 - wahlberechtigte Männer abs+rel
 - wahlberechtigte Frauen abs+rel
+
 ***** Wahlberechtigung Bezirk
 nur Wahltag
 
@@ -280,9 +216,11 @@ nur Wahltag
 - Wahlberechtigte Gesamt
 - wahlberechtigte Männer abs+rel
 - wahlberechtigte Frauen abs+rel
-***** Stimmen Sprengel
+
+# Stimmen Sprengel
 - Gesamte Stimmen
 - nur Wahltag: ohne Sprengel 816, 2798, 2799
+
 ***** Stadt
 # data
 - abgegebene Stimmen
@@ -296,8 +234,9 @@ nur Wahltag
 - Anzahl Bezirke
 - Bezirknamen
 - Namen Parteien
-**** PLOTS
-***** Boxplots
+
+*** Diagramme
+**** Boxplots
 - Verteilung aller Parteien
 - Verteilung der Big 6
 - Verteilung jeder Partei
@@ -306,24 +245,28 @@ nur Wahltag
 - jede Partei Sprengel
 - Verteilung Wahlbeteiligung Sprengel
 - Verteilung abgegebene Stimmen Sprengel
-***** Histogramme
+
+**** Histogramme
 - Verteilung der Stimmen der Sprengel
 - Verteilung Parteien
 - Verteilung Wahlbeteiligung Sprengel
 - Verteilung unvalide Stimmen Sprengel
-***** Dichtefunktionen
+
+**** Dichtefunktionen
 - Dichtefunktion Parteien Sprengel
-***** Säulendiagramme
+
+**** Säulendiagramme
 - Ergebnis Parteien Stadt
 - Ergebnis Big 6 Stadt
 - Korrelations-Analyse Sprengel
 - Wahlbeteiligung Bezirk
 - Wahlberechtigung Bezirk
 - Unvalide Stimmen Bezirk
-**** KORRELATIONS-ANALYSE
-*** SPAETER
+
 ** 0.x - Choroplethen Diagramm
 # todo
+- Karten: https://underdark.wordpress.com/2012/11/17/mapping-ogdwien-population-density/
+- Karte: nach Farbe der stimmstärksten Partei im Sprengel/Bezirk einfärben
 - Export: PNG, PDF, SVG, 
 - Beschriftung der Bezirke
 - Legende
@@ -353,14 +296,18 @@ nur Wahltag
 *** ANFORDERUNGEN
 *** SPAETER
 *** DOKUMENTATION
-** 0.x - Linkes/Rechtes Murufer
+** 0.x - Klassifizierungen
 # todo
 - Linkes VS rechtes Murufer vergleichenk
+- Linkes/Rechtes Murufer
+- Innere / Aeussere Stadt
 
 *** ANFORDERUNGEN
 *** DOKUMENTATION
 *** SPAETER
 ** 0.x - Daten Analyse
+- analyse der verteilung der korrelationen auf sprengel und bezirk ebene
+- varianzen der korrelationen
 - Spearman Rank Korrelation erfassen
 ** 0.x - Koalitionen
 # todo
@@ -405,21 +352,10 @@ graz
 - test of reasonability of data: check if votes are in between 0 and maximum allowed voters for spatial area, if votes all together are in between of 0 and allowed voters, and so on
 - QGIS AddOn dazu erstellen: automatisches importieren von Shapefiles und verarbeiten erstellen: diverse Karten mit Beschriftung, Copyright, Export
 * IMPLEMENTATION R ELECTION PACKAGE
-* PRAESENTATION
-- zahlen angeben: wieviele bilder, wieviele zeilen code,...
-- zeige das Wichtigste zuerst: das Wahlergebnis
-- mit irgendwas lustigem anfangen => stalingraz, kpö oder ähnliches, vielleicht kommunistische piraten oder sowas...
-
-
-
-# FRAGEN / FEEDBACK
+* FRAGEN / FEEDBACK
 - warum vorgezogenen Wahltag nicht in eigenen Sprengel rein geben?
 - Encoding Files
 - Geodaten immer mitliefern
 - Daten zu Umfragen vorhanden?
 - Weitere Analysen?
-
-  
-
-
-Ing. Mörth Referat 1b, IT, 
+=> Ing. Mörth Referat 1b, IT, 
