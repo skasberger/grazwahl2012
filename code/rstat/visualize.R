@@ -19,77 +19,89 @@
 
 rm(list=ls())
 
-load("/home/cheeseman/Open Science/Projects/Graz Wahlen 2012/data/rstat/grazwahlPP2.rda")
-load(paste0(environment[["folderDataRawR"]], environment[["filenameRawRDA"]]))
+library("grDevices")
 
-environment[["folderImages"]] <- paste0(environment[["workDir"]],"images/")
-
+load(paste0(getwd(), "/data/rstat/grazwahlPP2.rda"))
+load(paste0(environment[["folderDataR"]], "/", environment[["filenameRawRDA"]]))
 source(environment[["functions.R"]])
+
+environment[["folderImages"]] <- paste0(environment[["homeDir"]],"/images/")
+environment[["folderImagesCorr"]] <- paste0(environment[["homeDir"]],"/images/correlation/")
+environment[["folderImagesVotes"]] <- paste0(environment[["homeDir"]],"/images/votes/")
+environment[["folderImagesBox"]] <- paste0(environment[["homeDir"]],"/images/boxplot/")
+environment[["folderImagesHist"]] <- paste0(environment[["homeDir"]],"/images/histogram/")
+environment[["folderImagesDens"]] <- paste0(environment[["homeDir"]],"/images/density/")
 
 
 ##  BOXPLOTS  ##
 
 
 # parishes distribution of all parties (abs)
-Boxplot(votesParishEleDay[,3:13], filename=paste0(environment[["folderImages"]], "boxAllPartiesParAbs"), colors=city[["partycolors"]], 
-        names=city[["partyAcrAT"]], title="Verteilung Stimmen Sprengel (abs)", legend=T, output=T, svg=T, pdf=T, png=T)
+Boxplot(votesParishEleDay[,3:13], filename=paste0(environment[["folderImagesBox"]], "boxAllPartiesParAbs"), colors=city[["partycolors"]], 
+        names=city[["partyAcrAT"]], title="Verteilung Stimmen Sprengel (abs)", yaxis="Stimmen", legend=T, svg=T, pdf=F, png=T)
 
 # parishes distribution of all parties (rel)
-Boxplot(votesParishEleDay[,14:24], filename=paste0(environment[["folderImages"]], "boxAllPartiesParRel"), colors=city[["partycolors"]], 
-        names=city[["partyAcrAT"]], title="Verteilung Stimmen Sprengel (rel)", legend=T, output=T, svg=T, pdf=T, png=T)
+Boxplot(votesParishEleDay[,14:24], filename=paste0(environment[["folderImagesBox"]], "boxAllPartiesParRel"), colors=city[["partycolors"]], 
+        names=city[["partyAcrAT"]], title="Verteilung Stimmen Sprengel (rel)", yaxis="Stimmen [%]", legend=T, svg=T, pdf=F, png=T)
 
 # parishes distribution of big 6 (abs)
-Boxplot(votesParishEleDay[,c(3:7, 10)], filename=paste0(environment[["folderImages"]], "boxBig6PartiesParAbs"), 
-        colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], title="Boxplots Big6 (abs)", 
-        legend=T, output=T, svg=T, pdf=T, png=T)
+Boxplot(votesParishEleDay[,c(3:7, 10)], filename=paste0(environment[["folderImagesBox"]], "boxBig6PartiesParAbs"), 
+        colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], yaxis="Stimmen", title="Boxplots Big6 (abs)", 
+        legend=T, svg=T, pdf=F, png=T)
 
 # parishes distribution of big 6 (rel)
-Boxplot(votesParishEleDay[,c(14:18, 21)], filename=paste0(environment[["folderImages"]], "boxBig6PartiesParRel"), 
+Boxplot(votesParishEleDay[,c(14:18, 21)], filename=paste0(environment[["folderImagesBox"]], "boxBig6PartiesParRel"), 
         colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], title="Boxplots Big6 (rel)", 
-        legend=T, output=T, svg=T, pdf=T, png=T)
+        yaxis="Stimmen [%]", legend=T, svg=T, pdf=F, png=T)
 
 # parishes distribution every party itself
 for(i in seq_along(1:city[["numParties"]])) {
-  # absolute 
+  
+  # absolute   
   Boxplot(votesParishEleDay[, 2+i], 
-          filename=paste0(environment[["folderImages"]], "box", city[["partyAcrIT"]][i], "ParAbs"), 
+          filename=paste0(environment[["folderImagesBox"]], "box", city[["partyAcrIT"]][i], "ParAbs"), 
           colors=city[["partycolors"]][i], 
           names=city[["partyAcrAT"]][i], 
           title=paste0("Verteilung Stimmen ", city[["partyAcrAT"]][i], " (abs)"),
-          legend=F, output=T, svg=T, pdf=T, png=T)
+          yaxis="Stimmen",
+          legend=F, svg=T, pdf=F, png=T)
   
   # relative
   Boxplot(votesParishEleDay[, 13+i], 
-          filename=paste0(environment[["folderImages"]], "box", city[["partyAcrIT"]][i], "ParRel"), 
+          filename=paste0(environment[["folderImagesBox"]], "box", city[["partyAcrIT"]][i], "ParRel"), 
           colors=city[["partycolors"]][i], 
           names=city[["partyAcrAT"]][i], 
           title=paste0("Verteilung Stimmen ", city[["partyAcrAT"]][i], " (rel)"), 
-          legend=F, output=T, svg=T, pdf=T, png=T)
+          yaxis="Stimmen [%]",
+          legend=F, svg=T, pdf=F, png=T)
 }
 
 # distribution of all votes in parishes (abs)
 Boxplot(participationParishEleDay[["allVotes"]], 
-        filename=paste0(environment[["folderImages"]], "box", "AllVotesParAbs"), 
+        filename=paste0(environment[["folderImagesBox"]], "box", "AllVotesParAbs"), 
         colors="cyan", 
         names="TEST", 
         title="Verteilung abgegebene Stimmen in Sprengel (abs)", 
-        legend=F, output=T, svg=T, pdf=T, png=T)
+        yaxis="Stimmen",
+        legend=F, svg=T, pdf=F, png=T)
 
 # relative election participation in parishes and districts
 Boxplot(list(participationParishEleDay[["electionPartRel"]], participationDistrict[["electionParticipation"]]),
-        filename=paste0(environment[["folderImages"]], "box", "ElePartRel"), 
+        filename=paste0(environment[["folderImagesBox"]], "box", "ElePartRel"), 
         colors="cyan", 
         names=c("Sprengel", "Bezirk"), 
         title="Verteilung Wahlbeteiligung in Sprengel und Bezirk (rel)", 
-        legend=F, output=T, svg=T, pdf=T, png=T)
+        yaxis="Stimmen [%]",
+        legend=F, svg=T, pdf=F, png=T)
 
 # relative unvalid votes in parishes and districts
 Boxplot(list(participationParishEleDay[["unvalidVotesRel"]], participationDistrict[["unvalidVotesRel"]]),
-        filename=paste0(environment[["folderImages"]], "box", "UnvalidVotesAbs"), 
+        filename=paste0(environment[["folderImagesBox"]], "box", "UnvalidVotesRel"), 
         colors="cyan", 
         names=c("Sprengel", "Bezirk"), 
         title="Verteilung ungültige Stimmen in Sprengel und Bezirk (rel)", 
-        legend=F, output=T, svg=T, pdf=T, png=T)
+        yaxis="Stimmen [%]",
+        legend=F, svg=T, pdf=F, png=T)
 
 
 ##  BARPLOTS  ##
@@ -97,51 +109,64 @@ Boxplot(list(participationParishEleDay[["unvalidVotesRel"]], participationDistri
 
 # party results of city (abs)
 VotesColumnChart(city[["votesPartiesAbs"]], 
-                 filename=paste0(environment[["folderImages"]], "barPartiesCityAbs"), 
+                 filename=paste0(environment[["folderImagesVotes"]], "barPartiesCityAbs"), 
                  colors=city[["partycolors"]], 
                  names=city[["partyAcrAT"]], 
                  title="Ergebnis Parteien (abs)", 
-                 output=T, png=T, svg=T, pdf=T)
+                 yaxis="Stimmen",
+                 shift=1000,
+                 output=T, png=T, svg=T, pdf=F)
+
 
 # party results of city (rel)
 VotesColumnChart(city[["votesPartiesRel"]], 
-                 filename=paste0(environment[["folderImages"]], "barPartiesCityRel"), 
+                 filename=paste0(environment[["folderImagesVotes"]], "barPartiesCityRel"), 
                  colors=city[["partycolors"]], 
                  names=city[["partyAcrAT"]], 
                  title="Ergebnis Parteien (rel)", 
-                 output=T, png=T, svg=T, pdf=T)
+                 yaxis="Stimmen [%]",
+                 shift=1,
+                 output=T, png=T, svg=T, pdf=F)
 
-# all authorized votes  ofdistricts 
+# all authorized votes of districts (abs)
 VotesColumnChart(authVotersDistrict[["authAll"]], 
-                 filename=paste0(environment[["folderImages"]], "barAuthAllDisAbs"), 
+                 filename=paste0(environment[["folderImagesVotes"]], "barAuthAllDisAbs"), 
                  colors="cyan", 
                  names=city[["nameDistricts"]], 
                  title="Wahlberechtigt Bezirke", 
-                 output=T, png=T, svg=T, pdf=T)
+                 yaxis="Stimmen",
+                 shift=700,
+                 output=T, png=T, svg=T, pdf=F)
 
 # all votes in districts (abs)
 VotesColumnChart(participationDistrict[["allVotes"]], 
-                 filename=paste0(environment[["folderImages"]], "barAllVotesDisAbs"), 
+                 filename=paste0(environment[["folderImagesVotes"]], "barAllVotesDisAbs"), 
                  colors="cyan", 
                  names=city[["nameDistricts"]], 
                  title="Wahlbeteiligung Bezirke (abs)", 
-                 output=T, png=T, svg=T, pdf=T)
+                 yaxis="Stimmen",
+                 shift=300,
+                 output=T, png=T, svg=T, pdf=F)
 
-# relative election participation of districts
+# relative election participation of districts 
 VotesColumnChart(participationDistrict[["electionParticipation"]], 
-                 filename=paste0(environment[["folderImages"]], "barElePartDisRel"), 
+                 filename=paste0(environment[["folderImagesVotes"]], "barElePartDisRel"), 
                  colors="cyan", 
                  names=city[["nameDistricts"]], 
                  title="Wahlbeteiligung Bezirke (rel)", 
-                 output=T, png=T, svg=T, pdf=T)
+                 yaxis="Stimmen [%]",
+                 shift=1.5,
+                 output=T, png=T, svg=T, pdf=F)
 
 # relative unvalid votes of districts
 VotesColumnChart(participationDistrict[["unvalidVotesRel"]], 
-                 filename=paste0(environment[["folderImages"]], "barUnvalidVotesDisRel"), 
+                 filename=paste0(environment[["folderImagesVotes"]], "barUnvalidVotesDisRel"), 
                  colors="cyan", 
                  names=city[["nameDistricts"]], 
                  title="Anteil ungültiger Stimmen (Bezirke)", 
-                 output=T, png=T, svg=T, pdf=T)
+                 yaxis="Stimmen [%]",
+                 shift=0.07,
+                 output=T, png=T, svg=T, pdf=F)
 
 
 ##  HISTOGRAMS & DENSITY  ##
@@ -151,69 +176,70 @@ for(i in seq_along(1:city[["numParties"]])) {
   
   # distribution of votes in parishes (abs)
   Histogram(votesParishEleDay[,2+i], 
-            filename=paste0(environment[["folderImages"]], "hist", city[["partyAcrIT"]][i] , "ParAbs"), 
+            filename=paste0(environment[["folderImagesHist"]], "hist", city[["partyAcrIT"]][i] , "ParAbs"), 
             colors=city[["partycolors"]][i], 
             yaxis="Anzahl", 
             xaxis="Stimmen", 
             title=paste0("Stimmenverteilung Wahlsprengel ", city[["partyAcrAT"]][i], " (abs)"), 
-            output=T, png=T, svg=T, pdf=T)
+            output=T, png=T, svg=T, pdf=F)
   
   # distribution of votes in parishes (rel)
   Histogram(votesParishEleDay[,13+i], 
-            filename=paste0(environment[["folderImages"]], "hist", city[["partyAcrIT"]][i] , "ParRel"), 
+            filename=paste0(environment[["folderImagesHist"]], "hist", city[["partyAcrIT"]][i] , "ParRel"), 
             colors=city[["partycolors"]][i], 
             yaxis="Anzahl", 
-            xaxis="Prozent", 
+            xaxis="Stimmen [%]", 
             title=paste0("Stimmenverteilung Wahlsprengel ", city[["partyAcrAT"]][i], " (rel)"), 
-            output=T, png=T, svg=T, pdf=T)
+            output=T, png=T, svg=T, pdf=F)
   
   # density function
   DensityPlot(density(votesParishEleDay[,2+i]), 
-              filename=paste0(environment[["folderImages"]], "dens", city[["partyAcrIT"]][i], "ParAbs"), 
+              filename=paste0(environment[["folderImagesDens"]], "dens", city[["partyAcrIT"]][i], "ParAbs"), 
               color="cyan", 
               title=paste0("Dichtefunktion ", city[["partyAcrIT"]][i], " (abs)"), 
-              output=T, png=T, svg=T, pdf=T)
+              yaxis="Stimmen [%]",
+              output=T, png=T, svg=T, pdf=F)
 }
 
 # distribution of relative election participation in parishes
 Histogram(participationParishEleDay[["electionPartRel"]], 
-          filename=paste0(environment[["folderImages"]], "histElePartParRel"), 
+          filename=paste0(environment[["folderImagesHist"]], "histElePartParRel"), 
           colors="cyan", 
           yaxis="Anzahl", 
-          xaxis="Prozent", 
+          xaxis="Abgegebene Stimmen [%]", 
           title=paste0("Verteilung Wahlbeteiligung Sprengel (rel)"), 
-          output=T, png=T, svg=T, pdf=T)
+          output=T, png=T, svg=T, pdf=F)
 
 # distribution of relative unvalid votes in parishes
 Histogram(participationParishEleDay[["unvalidVotesRel"]], 
-          filename=paste0(environment[["folderImages"]], "histUnvalidVotesParRel"), 
+          filename=paste0(environment[["folderImagesHist"]], "histUnvalidVotesParRel"), 
           colors="cyan", 
           yaxis="Anzahl", 
-          xaxis="Prozent", 
+          xaxis="Ungueltige Stimmen [%]", 
           title=paste0("Verteilung ungültige Stimmen Sprengel (rel)"), 
-          output=T, png=T, svg=T, pdf=T)
+          output=T, png=T, svg=T, pdf=F)
 
 
 ##  CORRELATION  ##
 
 
 # Pearson
-CalculateCorrelation(votesParishEleDay[, 3:13], votesDistrict[, 2:12], 
+CalculateCorrelation(votesParishEleDay[, 3:13], votesDistrict[, 2:12],
                      corrMethod="pearson",
-                     folder=environment[["folderImages"]],
+                     folder=environment[["folderImagesCorr"]],
                      namesIT=city[["partyAcrIT"]],
                      namesAT=city[["partyAcrAT"]],
                      colors=city[["partycolors"]],
-                     legend=F, output=T, png=T, svg=T, pdf=T)
+                     legend=F, output=T, png=T, svg=T, pdf=F)
 
 # Spearman
-CalculateCorrelation(votesParishEleDay[, 3:13], votesDistrict[, 2:12], 
+CalculateCorrelation(votesParishEleDay[, 3:13], votesDistrict[, 2:12],
                      corrMethod="spearman",
-                     folder=environment[["folderImages"]],
+                     folder=environment[["folderImagesCorr"]],
                      namesIT=city[["partyAcrIT"]],
                      namesAT=city[["partyAcrAT"]],
                      colors=city[["partycolors"]],
-                     legend=F, output=T, png=T, svg=T, pdf=T)
+                     legend=F, output=T, png=T, svg=T, pdf=F)
 
 
 # Prepare data for left / right Mur Ufer
@@ -259,111 +285,53 @@ participationParishEleDay$ufer <- as.factor(participationParishEleDay$ufer)
 for(i in seq_along(1:city[["numParties"]])) {
   BoxplotLR(votesParishEleDay[, 2+i], 
             votesParishEleDay[, "ufer"],
-            filename=paste0(environment[["folderImages"]], "box", city[["partyAcrIT"]][i], "UferAbs"), 
+            filename=paste0(environment[["folderImagesBox"]], "box", city[["partyAcrIT"]][i], "UferAbs"), 
             colors=city[["partycolors"]][i], 
             names=levels(votesParishEleDay[, "ufer"]),
             title=paste0("Verteilung nach Murufer ", city[["partyAcrAT"]][i], " (abs)"),
-            legend=F, output=T, svg=T, pdf=T, png=T)
+            legend=F, svg=T, pdf=F, png=T)
 }
 
 # parishes votes distribution every party solely between the left and right murufer (relative)
 for(i in seq_along(1:city[["numParties"]])) {
     BoxplotLR(votesParishEleDay[, 13+i], 
               votesParishEleDay[, "ufer"],
-              filename=paste0(environment[["folderImages"]], "box", city[["partyAcrIT"]][i], "UferRel"), 
+              filename=paste0(environment[["folderImagesBox"]], "box", city[["partyAcrIT"]][i], "UferRel"), 
               colors=city[["partycolors"]][i], 
               names=levels(votesParishEleDay[, "ufer"]),
               title=paste0("Verteilung nach Murufer ", city[["partyAcrAT"]][i], " (rel)"),
-              legend=F, output=T, svg=T, pdf=T, png=T)
+              legend=F, svg=T, pdf=F, png=T)
 }
 
 # election participation comparision between left and right murufer (rel)
 BoxplotLR(participationParishEleDay[, "allVotes"], 
           participationParishEleDay[, "ufer"],
-          filename=paste0(environment[["folderImages"]], "boxElePartRel"), 
+          filename=paste0(environment[["folderImagesBox"]], "boxElePartRel"), 
           colors="cyan", 
           names=levels(votesParishEleDay[, "ufer"]),
           title="Verteilung Wahlbeteiligung in Sprengel nach Murufer (abs)",
-          legend=F, output=T, svg=T, pdf=T, png=T)
+          legend=F, svg=T, pdf=F, png=T)
 
 # election participation comparision between left and right murufer (abs)
 BoxplotLR(participationParishEleDay[, "electionPartRel"], 
           participationParishEleDay[, "ufer"],
-          filename=paste0(environment[["folderImages"]], "boxElePartAbs"), 
+          filename=paste0(environment[["folderImagesBox"]], "boxElePartAbs"), 
           colors="cyan", 
           names=levels(votesParishEleDay[, "ufer"]),
           title=paste0("Verteilung Wahlbeteiligung in Sprengel nach Murufer (rel)"),
-          legend=F, output=T, svg=T, pdf=T, png=T)
+          legend=F, svg=T, pdf=F, png=T)
 
 # unvalid votes comparision between left and right murufer (abs)
 BoxplotLR(participationParishEleDay[, "unvalidVotesRel"], 
           participationParishEleDay[, "ufer"],
-          filename=paste0(environment[["folderImages"]], "boxUnvalidVotesParRel"), 
+          filename=paste0(environment[["folderImagesBox"]], "boxUnvalidVotesParRel"), 
           colors="cyan", 
           names=levels(votesParishEleDay[, "ufer"]),
           title=paste0("Verteilung ungültige Stimmen in Sprengel nach Murufer (rel)"),
-          legend=F, output=T, svg=T, pdf=T, png=T)
+          legend=F, svg=T, pdf=F, png=T)
 
+# save data as RDA
+environment[["filenameDataViz"]] <- "grazwahlViz.rda"
+save(list=ls(), file=paste0(environment[["folderDataR"]], "/", environment[["filenameDataViz"]]))
 
-
-
-
-
-
-
-
-
-
-
-
-
-##  STATISTIC VALUES  ##
-
-
-# variances
-
-
-
-# means
-
-# 
-# imgWidth <- 88
-# imgHeight <- 31
-# imgRatio <- width / height
-# 
-# # add creative commons image to plots
-# Boxplot(votesParishEleDay[,3:13], filename=paste0(environment[["folderImages"]], "boxAllPartiesParAbs"), colors=city[["partycolors"]], 
-#         names=city[["partyAcrAT"]], title="Verteilung Stimmen Sprengel (abs)", legend=T, output=T, svg=T, pdf=T, png=T)
-# 
-# Boxplot(votesParishEleDay[,c(14:18, 21)], filename=paste0(environment[["folderImages"]], "boxBig6PartiesParRel"), 
-#         colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], title="Boxplots Big6 (rel)", 
-#         legend=T, output=T, svg=T, pdf=T, png=T)
-# 
-# ima <- readPNG("./images/cc/cc-by.png")
-# 
-# #Get the plot information so the image will fill the plot box, and draw it
-# lim <- par()
-# lim$usr # x1, x2, y1, y2
-# plotWidth <- lim$usr[2] - lim$usr[1]
-# plotHeight <- lim$usr[4] - lim$usr[3]
-# plotRatio <- plotWidth / plotHeight
-# defWidth <- 0.15 # means the default width of the image should be 5% of the plot width, you can scale this with the scalefactor
-# 
-# posRelXRight <- 0.2
-# posRelYRight <- 0.7
-# scaleFactor <- 1
-# posPlotXRight <- lim$usr[1] + posRelXRight * plotWidth
-# posPlotYRight <- lim$usr[3] + posRelYRight * plotHeight
-# posPlotXLeft <- posPlotXRight - plotWidth * scaleFactor * defWidth * 0.8
-# posPlotYLeft <- posPlotYRight - plotHeight * scaleFactor * defWidth / imgRatio
-# rasterImage(ima, posPlotXLeft, posPlotYLeft, posPlotXRight, posPlotYRight)
-# 
-# lim$usr # x1, x2, y1, y2
-# plotWidth
-# plotHeight
-# posPlotXRight
-# posPlotXLeft
-# posPlotYRight
-# posPlotYLeft
-
-
+rm(list=ls())

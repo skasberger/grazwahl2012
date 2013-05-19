@@ -46,6 +46,12 @@ city[["numDistricts"]] <- length(city[["nameDistricts"]])
 city[["numParties"]] <- 11L
 city[["leftMurDistricts"]] <- c(1, 2, 3, 6, 7, 8, 9, 10, 11, 12)
 city[["rightMurDistricts"]] <- c(4, 5, 13, 14, 15, 16, 17)
+city[["districtPopulation"]] <- c(4501, 18029, 28274, 32879, 29121, 35952, 14322, 15787, 13139, 
+                             6560, 10603, 19925, 11490, 20754, 15236, 15457, 7973)
+city[["districtArea"]] <- c(1161664, 1833170, 5504518, 3704667, 5057753, 4060911, 7979114, 8858179, 
+                            4479334, 10033190, 14113083, 18455010, 10836471, 7791283, 5770361, 11756419, 6181961) #squaremeters
+city[["districtPopulationDensity"]] <- (city[["districtPopulation"]] * 1000000) / city[["districtArea"]]
+
 
 # set environment data
 environment[["homeDir"]] <- getwd()
@@ -232,6 +238,11 @@ names(votesDistrict)[which(names(votesDistrict) == "CP")] <- "CPGabs"
 
 temp <- votesDistrict[, 2:12] / participationDistrict[["validVotesAbs"]] * 100
 colnames(temp) <- c("SPOErel", "OEVPrel", "FPOErel", "GRUENErel", "KPOErel", "BZOErel", "CPGrel", "PIRATrel", "ESKrel", "BBBrel", "WIRrel")
+votesDistrict <- cbind(votesDistrict, temp)
+
+# add population data of district
+temp <- cbind(city[["districtPopulation"]], city[["districtArea"]], city[["districtPopulationDensity"]])
+colnames(temp) <- c("population", "Area", "popDensity")
 votesDistrict <- cbind(votesDistrict, temp)
 
 rm(temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10, temp11, temp)

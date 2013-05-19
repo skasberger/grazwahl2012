@@ -47,6 +47,7 @@ Standard Format/Struktur überlegen
 - Einwohner, Fläche, Einwohnerdichte pro Bezirk adden
 - Copyright adden
 - Korrelation = 1 Variable löschen
+- Choroplethendiagram in R und QGIS als Use Case für Einleitung FOSSGIS verwenden
 - Fix JSON Export
 - Überschriften verbessern
 - export der fertigen datensets als CSV
@@ -298,7 +299,6 @@ nur Wahltag
 *** DOKUMENTATION
 ** 0.x - Klassifizierungen
 # todo
-- Linkes VS rechtes Murufer vergleichenk
 - Linkes/Rechtes Murufer
 - Innere / Aeussere Stadt
 
