@@ -20,7 +20,6 @@ cp doc/licenses/CC-BY-LICENSE.txt data/rstat/LICENSE.txt
 cp doc/licenses/CC-BY-LICENSE.txt data/json/LICENSE.txt
 
 # run visualize.R
-mkdir images
 mkdir images/correlation
 mkdir images/density
 mkdir images/votes
@@ -41,11 +40,8 @@ sh code/shell/create_tarball.sh
 # run spatial.R
 mkdir data/shape
 
-cp data/raw/shape/bezirksgrenzen/bezirksgrenzen.shp data/shape/
-cp data/raw/shape/bezirksgrenzen/bezirksgrenzen.shx data/shape/
+cp data/raw/shape/bezirksgrenzen/*.* data/shape/
 
 R --no-save < code/rstat/spatial.R 
-
-cp doc/licenses/CC-BY-LICENSE.txt data/shape/LICENSE.txt
 
 

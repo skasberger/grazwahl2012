@@ -343,7 +343,7 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson"
                              filename=paste0(folder, "barCorr", namesIT[i], methAcr, "ParAbs"), 
                              colors=colors, 
                              names=namesAT,
-                             title=paste0(methName, " Korrelationen von ", namesAT[i], " in Sprengel (abs)"), 
+                             title=paste0(methName, " Korrelationen von ", namesAT[i], " nach Sprengel"), 
                              legend=legend, output=output, png=png, svg=svg, pdf=pdf)
       
       # district
@@ -351,7 +351,7 @@ CalculateCorrelation  <- function(dataParish, dataDistrict, corrMethod="pearson"
                              filename=paste0(folder, "barCorr", namesIT[i], methAcr, "DisAbs", methAcr), 
                              colors=colors, 
                              names=namesAT,
-                             title=paste0(methName, " Korrelationen von ", namesAT[i], " in Bezirke (abs)"), 
+                             title=paste0(methName, " Korrelationen von ", namesAT[i], " nach Bezirke"), 
                              legend=legend, output=output, png=png, svg=svg, pdf=pdf)
     }
     

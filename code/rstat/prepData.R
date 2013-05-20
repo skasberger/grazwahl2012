@@ -272,8 +272,17 @@ city[["votesPartiesRel"]] <- city[["votesPartiesAbs"]] / city[["validVotesAbs"]]
 # delete rows for 2798 and 2799 from authorized voters table
 authVotersParish <- authVotersParish[!(authVotersParish[["numParish"]] == 2798 | authVotersParish[["numParish"]] == 2799), ]
 
+
+# SAVE DATA
+
+
 environment[["filenameDataPP2"]] <- "grazwahlPP2.rda"
-save(list=ls(), file=paste0(environment[["folderDataR"]], "/", environment[["filenameDataPP2"]]))
+save(environment, file=paste0(environment[["folderDataR"]], "/environment.rda"))
+rm(environment)
+save(list=ls(), file=paste0(getwd(), "/data/rstat/grazwahlPP2.rda"))
+load("/home/cheeseman/Open Science/projects/open-elections/Graz Wahlen 2012/data/rstat/grazwahlPP2.rda")
+rm(list=ls())
+
 # load()
 
 
@@ -295,7 +304,8 @@ for(i in seq_along(jsonFiles)) {
   SaveJSON(jsonFiles[i])
 }
 
-rm(list=ls())
+
+
 
 
 
