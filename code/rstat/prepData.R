@@ -276,6 +276,30 @@ authVotersParish <- authVotersParish[!(authVotersParish[["numParish"]] == 2798 |
 # SAVE DATA
 
 
+# as CSV files
+environment[["folderDataCSV"]] <- paste0(environment[["homeDir"]], "/data/csv/")
+environment[["filenameCSVauthVotersDistrict"]] <- "authVotersDistrict.csv"
+write.csv2(authVotersDistrict, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVauthVotersDistrict"]]))
+environment[["filenameCSVauthVotersParish"]] <- "authVotersParish.csv"
+write.csv2(authVotersParish, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVauthVotersParish"]]))
+environment[["filenameCSVauthVotersParishEleDay"]] <- "authVotersParishEleDay.csv"
+write.csv2(authVotersParishEleDay, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVauthVotersParishEleDay"]]))
+environment[["filenameCSVauthVotersParishEleDayMap"]] <- "authVotersParishEleDayMap.csv"
+write.csv2(authVotersParishEleDayMap, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVauthVotersParishEleDayMap"]]))
+environment[["filenameCSVparticipationDistrict"]] <- "participationDistrict.csv"
+write.csv2(participationDistrict, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVparticipationDistrict"]]))
+environment[["filenameCSVparticipationParishAll"]] <- "participationParishAll.csv"
+write.csv2(participationParishAll, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVparticipationParishAll"]]))
+environment[["filenameCSVparticipationParishEleDay"]] <- "participationParishEleDay.csv"
+write.csv2(participationParishEleDay, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVparticipationParishEleDay"]]))
+environment[["filenameCSVvotesDistrict"]] <- "votesDistrict.csv"
+write.csv2(votesDistrict, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVvotesDistrict"]]))
+environment[["filenameCSVvotesParishAll"]] <- "votesParishAll.csv"
+write.csv2(votesParishAll, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVvotesParishAll"]]))
+environment[["filenameCSVvotesParishEleDay"]] <- "votesParishEleDay.csv"
+write.csv2(votesParishEleDay, file=paste0(environment[["folderDataCSV"]], environment[["filenameCSVvotesParishEleDay"]]))
+
+# as RDA files
 environment[["filenameDataPP2"]] <- "grazwahlPP2.rda"
 save(environment, file=paste0(environment[["folderDataR"]], "/environment.rda"))
 rm(environment)

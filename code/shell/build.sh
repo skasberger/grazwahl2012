@@ -4,6 +4,7 @@
 rm -R data/json
 rm -R data/rstat
 rm -R data/shape
+rm -R data/csv
 rm -R images/correlation
 rm -R images/density
 rm -R images/votes
@@ -13,11 +14,13 @@ rm -R images/histogram
 # run prepData.R
 mkdir data/json
 mkdir data/rstat
+mkdir data/csv
 
 R --no-save < code/rstat/prepData.R 
 
 cp doc/licenses/CC-BY-LICENSE.txt data/rstat/LICENSE.txt
 cp doc/licenses/CC-BY-LICENSE.txt data/json/LICENSE.txt
+cp doc/licenses/CC-BY-LICENSE.txt data/csv/LICENSE.txt
 
 # run visualize.R
 mkdir images/correlation

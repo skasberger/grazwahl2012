@@ -44,10 +44,8 @@ Standard Format/Struktur überlegen
 * UMSETZUNG ANALYSE GRAZWAHLEN 2012
 ** 0.1 - Datenaufbereitung & Diagramme
 # todo
-- Copyright adden
-- pers.ordner unter environment in eine eigene rda datei speichern und diese nicht mit git mit versionieren!
+- fix correlation plot with numbers issue on negative correlation
 - Fix JSON Export
-- Überschriften verbessern
 - pdf export geht nicht
 - export der fertigen datensets als CSV
 - Durchschnittswerte berechnen: 

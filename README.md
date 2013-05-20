@@ -36,14 +36,19 @@ Die Vorwahlen sind unter dem Sprengel 816 eingetragen. [1]
 
 Inkonsistenz in Daten: es waren anscheinend um die 8000 vorgezogene Wahlen
 
-#### Farben
-- PARTEI	RGB-FARBCODE	
-- KPÖ 		#cc3333		204  51  51
-- FPÖ 		#0e428e		 14  66 142
-- SPÖ 		#ce000c		206   0  12
-- Grüne 	#87b52a		135 181  42
-- Piraten 	#4c2582		 76  37 130
-- BZÖ 		#ee7f00		238 127   0
+#### Parteien
+PARTEIKÜRZEL, PARTEINAME, RGB-FARBCODE
+- SPÖ: Sozialdemokratische Partei Österreichs, #ce000c, 206   0  12
+- ÖVP: Österreichische Volkspartei
+- FPÖ: Freiheitliche Partei Österreichs, #0e428e, 14  66 142
+- Grünen: Die Grünen - Alternative Liste Graz , #87b52a, 135 181  42
+- KPÖ: Kommunistische Partei Österreichs, #cc3333, 204  51  51
+- BZÖ: Liste Gerald Grosz, #ee7f00, 238 127   0
+- CP-G: Christliche Partei - Grössler
+- Piraten: Piratenpartei Graz, #4c2582, 76  37 130
+- ESK: Einsparkraftwerk
+- BBB: Betty Baloo Bande
+- WIR: Wir Wähler - Wir packen es an - Wir wollen unser Recht
 
 ### Quellcode
 #### Wörterbuch 
