@@ -287,7 +287,7 @@ for(i in seq_along(1:city[["numParties"]])) {
             filename=paste0(environment[["folderImagesBox"]], "box", city[["partyAcrIT"]][i], "UferAbs"), 
             colors=city[["partycolors"]][i], 
             names=levels(votesParishEleDay[, "ufer"]),
-            title=paste0("Verteilung nach Murufer von ", city[["partyAcrAT"]][i]),
+            title=paste0("Verteilung nach Murufer von ", city[["partyAcrAT"]][i], " (Sprengel)"),
             legend=F, svg=T, pdf=F, png=T)
 }
 
@@ -298,7 +298,7 @@ for(i in seq_along(1:city[["numParties"]])) {
               filename=paste0(environment[["folderImagesBox"]], "box", city[["partyAcrIT"]][i], "UferRel"), 
               colors=city[["partycolors"]][i], 
               names=levels(votesParishEleDay[, "ufer"]),
-              title=paste0("Verteilung nach Murufer von ", city[["partyAcrAT"]][i]),
+              title=paste0("Verteilung nach Murufer von ", city[["partyAcrAT"]][i], " (Sprengel)"),
               legend=F, svg=T, pdf=F, png=T)
 }
 

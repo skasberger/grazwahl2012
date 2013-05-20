@@ -452,6 +452,7 @@ BoxplotLR <- function(data, colSeg, filename, colors, names, title, yaxis, legen
   # output to the console
   if(output) {
     boxplot(data ~ colSeg, col=colors, names=names)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     title(title)
     dev.off()
   }
@@ -460,6 +461,7 @@ BoxplotLR <- function(data, colSeg, filename, colors, names, title, yaxis, legen
   if(png) {
     png(file=paste0(filename, ".png"), height=400, width=600)
     boxplot(data ~ colSeg, col=colors, names=names)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -473,6 +475,7 @@ BoxplotLR <- function(data, colSeg, filename, colors, names, title, yaxis, legen
   if(svg) {
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
     boxplot(data ~ colSeg, col=colors, names=names)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=city[["partycolors"]])
@@ -485,6 +488,8 @@ BoxplotLR <- function(data, colSeg, filename, colors, names, title, yaxis, legen
   # export pdf
   if(pdf) {
     boxplot(data ~ colSeg, col=colors, names=names)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
+
     if(legend) {
       legend("topright", names, fill=colors)
     }
