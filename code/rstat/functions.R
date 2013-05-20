@@ -90,7 +90,7 @@ Boxplot <- function(data, filename, colors, names, title, yaxis, legend=F, outpu
   # output to the console
   if(output) {
     boxplot(data, col=colors, names=names, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -104,7 +104,7 @@ Boxplot <- function(data, filename, colors, names, title, yaxis, legend=F, outpu
   if(png) {
     png(file=paste0(filename, ".png"), height=400, width=600)
     boxplot(data, col=colors, names=names, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -118,7 +118,7 @@ Boxplot <- function(data, filename, colors, names, title, yaxis, legend=F, outpu
   if(svg) {
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
     boxplot(data, col=colors, names=names, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=city[["partycolors"]])
@@ -132,7 +132,7 @@ Boxplot <- function(data, filename, colors, names, title, yaxis, legend=F, outpu
   if(pdf) {
     
     boxplot(data, col=colors, names=names, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
 
     if(legend) {
       legend("topright", names, fill=colors)
@@ -157,7 +157,7 @@ VotesColumnChart <- function(data, filename, colors, names, title, yaxis, shift,
     
     bp <- barplot(data, col=colors, names=names, main=title, ylab=yaxis)
     text(x = bp, y=data + shift , labels=as.character(round(data, digits=2)), xpd=TRUE)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -173,7 +173,7 @@ VotesColumnChart <- function(data, filename, colors, names, title, yaxis, shift,
     
     bp <- barplot(data, col=colors, names=names, main=title, ylab=yaxis)
     text(x = bp, y=data + shift , labels=as.character(round(data, digits=2)), xpd=TRUE)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -188,7 +188,7 @@ VotesColumnChart <- function(data, filename, colors, names, title, yaxis, shift,
     
     bp <- barplot(data, col=colors, names=names, main=title, ylab=yaxis)
     text(x = bp, y=data + shift , labels=as.character(round(data, digits=2)), xpd=TRUE)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -202,7 +202,7 @@ VotesColumnChart <- function(data, filename, colors, names, title, yaxis, shift,
     
     bp <- barplot(data, col=colors, names=names, main=title, ylab=yaxis)
     text(x = bp, y=data + shift , labels=as.character(round(data, digits=2)), xpd=TRUE)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -225,7 +225,7 @@ Histogram <- function(data, filename, colors, title, xaxis, yaxis, output=T, png
   if(output) {
     
     hist(data, col=colors, breaks=100, main=title, xlab=xaxis, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=4, adj=1)
     dev.off()
   }
   
@@ -234,7 +234,7 @@ Histogram <- function(data, filename, colors, title, xaxis, yaxis, output=T, png
     png(file=paste0(filename, ".png"), height=400, width=600)
     
     hist(data, col=colors, breaks=100, main=title, xlab=xaxis, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=4, adj=1)
     dev.off()
   }
   
@@ -243,7 +243,7 @@ Histogram <- function(data, filename, colors, title, xaxis, yaxis, output=T, png
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
     
     hist(data, col=colors, breaks=100, main=title, xlab=xaxis, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=4, adj=1)
     dev.off()
   }
   
@@ -251,7 +251,7 @@ Histogram <- function(data, filename, colors, title, xaxis, yaxis, output=T, png
   if(pdf) {
     
     hist(data, col=colors, breaks=100, main=title, xlab=xaxis, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=4, adj=1)
     dev.copy2pdf(file=paste0(filename, ".pdf"))
   }
   
@@ -269,7 +269,7 @@ DensityPlot <- function(data, filename, color, title, yaxis, output=T, png=F, sv
   # output to the console
   if(output) {
     plot(data,lwd=3,col=color, main=title, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=4, adj=1)
     dev.off()
   }
   
@@ -277,7 +277,7 @@ DensityPlot <- function(data, filename, color, title, yaxis, output=T, png=F, sv
   if(png) {
     png(file=paste0(filename, ".png"), height=400, width=600)
     plot(data,lwd=3,col=color, main=title, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=4, adj=1)
     dev.off()
   }
   
@@ -285,14 +285,14 @@ DensityPlot <- function(data, filename, color, title, yaxis, output=T, png=F, sv
   if(svg) {
     svg(file=paste0(filename, ".svg"), height=4, width=6, onefile=TRUE)
     plot(data,lwd=3,col=color, main=title, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=4, adj=1)
     dev.off()
   }
   
   # export pdf
   if(pdf) {
     plot(data,lwd=3,col=color, main=title, ylab=yaxis)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=4, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=4, adj=1)
     dev.copy2pdf(file=paste0(filename, ".pdf"))
   }
 }
@@ -378,7 +378,7 @@ CorrelationColumnChart <- function(data, filename, colors, names, title, legend=
     bp <- barplot(data, col=colors, names=names, main=title, ylab="Korrelationskoeffizient")
     abline(h=mean(data), col="gray", lwd=2)
     text(x = bp, y=colText + 0.05 , labels=as.character(round(data, digits=2)), xpd=TRUE)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -394,7 +394,7 @@ CorrelationColumnChart <- function(data, filename, colors, names, title, legend=
     bp <- barplot(data, col=colors, names=names, main=title, ylab="Korrelationskoeffizient")
     abline(h=mean(data), col="gray", lwd=2)
     text(x = bp, y=colText + 0.05 , labels=as.character(round(data, digits=2)), xpd=TRUE)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -410,7 +410,7 @@ CorrelationColumnChart <- function(data, filename, colors, names, title, legend=
     bp <- barplot(data, col=colors, names=names, main=title, ylab="Korrelationskoeffizient")
     abline(h=mean(data), col="gray", lwd=2)
     text(x = bp, y=colText + 0.05 , labels=as.character(round(data, digits=2)), xpd=TRUE)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)
@@ -425,7 +425,7 @@ CorrelationColumnChart <- function(data, filename, colors, names, title, legend=
     bp <- barplot(data, col=colors, names=names, main=title, ylab="Korrelationskoeffizient")
     abline(h=mean(data), col="gray", lwd=2)
     text(x = bp, y=colText + 0.05 , labels=as.character(round(data, digits=2)), xpd=TRUE)
-    mtext("Urheber: OGD Stadt Graz, Lizenz CC by", side=1, line=3, adj=1)
+    mtext("Datenquelle: Stadt Graz - data.graz.gv.at, CC-by", side=1, line=3, adj=1)
     
     if(legend) {
       legend("topright", names, fill=colors)

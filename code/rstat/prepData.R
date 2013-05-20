@@ -242,7 +242,7 @@ votesDistrict <- cbind(votesDistrict, temp)
 
 # add population data of district
 temp <- cbind(city[["districtPopulation"]], city[["districtArea"]], city[["districtPopulationDensity"]])
-colnames(temp) <- c("population", "Area", "popDensity")
+colnames(temp) <- c("population", "area", "popDensity")
 votesDistrict <- cbind(votesDistrict, temp)
 
 rm(temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10, temp11, temp)

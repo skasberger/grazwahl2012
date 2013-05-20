@@ -13,7 +13,7 @@ Weiters soll auch eine Analyse von Graz spezifischen Fragestellungen in Verbindu
 **[Open Science Projektseite](http://openscience.alpine-geckos.at/projects/grazwahlen-2012/)**
 
 ## INSTALL
-Sämtliche R Scripts müssen aus dem root-Ordner ausgeführt werden.
+Sämtliche R Scripts müssen aus dem root-Ordner ausgeführt werden. In R Studio dazu unter "Session -> Set Working Directory -> Choose Directory" wählen und danach den root-Ordner auswählen.
 
 Sämtliche Inhalte können durch das Ausführen der Datei ``./code/shell/build.sh`` neu generiert werden. 
  
@@ -90,6 +90,7 @@ Folgende Diagrammtypen wurden aus unterschiedlichen Datensätzen erzeugt und sin
 - Parteien sind nach dem Listenplatz in allen Datensätzen geordnet
 
 ## ToDo
+
 ## CHANGELOG
 ### Version 1.0
 - Aufbereitung der Daten für weitere Analysen

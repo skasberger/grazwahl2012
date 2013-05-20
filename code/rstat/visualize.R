@@ -19,8 +19,6 @@
 
 rm(list=ls())
 
-library("grDevices")
-
 load(paste0(getwd(), "/data/rstat/grazwahlPP2.rda"))
 load(paste0(environment[["folderDataR"]], "/", environment[["filenameRawRDA"]]))
 source(environment[["functions.R"]])

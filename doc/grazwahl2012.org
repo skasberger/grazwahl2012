@@ -44,19 +44,17 @@ Standard Format/Struktur überlegen
 * UMSETZUNG ANALYSE GRAZWAHLEN 2012
 ** 0.1 - Datenaufbereitung & Diagramme
 # todo
-- Einwohner, Fläche, Einwohnerdichte pro Bezirk adden
 - Copyright adden
-- Korrelation = 1 Variable löschen
-- Choroplethendiagram in R und QGIS als Use Case für Einleitung FOSSGIS verwenden
+- pers.ordner unter environment in eine eigene rda datei speichern und diese nicht mit git mit versionieren!
 - Fix JSON Export
 - Überschriften verbessern
+- pdf export geht nicht
 - export der fertigen datensets als CSV
 - Durchschnittswerte berechnen: 
   - gültige, gesamte, ungültige Stimmen pro Sprengel/Bezirk
   - Wahlberechtigte pro Sprengel/Bezirk
   - Anzahl Sprengel pro Bezirk
 - auf datengrundlage in finalen werken und in der doku hinweisen: aggragierte daten der sprengel auf bezirksebene sind nur die stimmen vom wahltag selber!
-- dokumentieren der datenstruktur 
 *** ANFORDERUNGEN
 - Korrigieren von Fehlern im Datensatz
 - Aufbereiten der Rohdaten für die weitere Verwendung
@@ -267,6 +265,7 @@ nur Wahltag
 ** 0.x - Choroplethen Diagramm
 # todo
 - Karten: https://underdark.wordpress.com/2012/11/17/mapping-ogdwien-population-density/
+- Choroplethendiagram in R und QGIS als Use Case für Einleitung FOSSGIS verwenden
 - Karte: nach Farbe der stimmstärksten Partei im Sprengel/Bezirk einfärben
 - Export: PNG, PDF, SVG, 
 - Beschriftung der Bezirke
@@ -306,6 +305,7 @@ nur Wahltag
 *** DOKUMENTATION
 *** SPAETER
 ** 0.x - Daten Analyse
+- Korrelation = 1 Variable löschen
 - analyse der verteilung der korrelationen auf sprengel und bezirk ebene
 - varianzen der korrelationen
 - Spearman Rank Korrelation erfassen
