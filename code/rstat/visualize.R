@@ -37,20 +37,20 @@ environment[["folderImagesDens"]] <- paste0(environment[["homeDir"]],"/images/de
 
 # parishes distribution of all parties (abs)
 Boxplot(votesParishEleDay[,3:13], filename=paste0(environment[["folderImagesBox"]], "boxAllPartiesParAbs"), colors=city[["partycolors"]], 
-        names=city[["partyAcrAT"]], title="Stimmen Grazer Gemeinderatswahl 2013 nach Sprengel", yaxis="Stimmen", legend=T, svg=T, pdf=F, png=T)
+        names=city[["partyAcrAT"]], title="Stimmen Grazer Gemeinderatswahl 2012 nach Sprengel", yaxis="Stimmen", legend=T, svg=T, pdf=F, png=T)
 
 # parishes distribution of all parties (rel)
 Boxplot(votesParishEleDay[,14:24], filename=paste0(environment[["folderImagesBox"]], "boxAllPartiesParRel"), colors=city[["partycolors"]], 
-        names=city[["partyAcrAT"]], title="Stimmen Grazer Gemeinderatswahl 2013 nach Sprengel", yaxis="Stimmen [%]", legend=T, svg=T, pdf=F, png=T)
+        names=city[["partyAcrAT"]], title="Stimmen Grazer Gemeinderatswahl 2012 nach Sprengel", yaxis="Stimmen [%]", legend=T, svg=T, pdf=F, png=T)
 
 # parishes distribution of big 6 (abs)
 Boxplot(votesParishEleDay[,c(3:7, 10)], filename=paste0(environment[["folderImagesBox"]], "boxBig6PartiesParAbs"), 
-        colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], yaxis="Stimmen", title="Big6 Grazer Gemeinderatswahl 2013 nach Sprengel", 
+        colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], yaxis="Stimmen", title="Big6 Grazer Gemeinderatswahl 2012 nach Sprengel", 
         legend=T, svg=T, pdf=F, png=T)
 
 # parishes distribution of big 6 (rel)
 Boxplot(votesParishEleDay[,c(14:18, 21)], filename=paste0(environment[["folderImagesBox"]], "boxBig6PartiesParRel"), 
-        colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], title="Big6 Grazer Gemeinderatswahl 2013 nach Sprengel", 
+        colors=city[["partycolors"]][c(1:5, 8)], names=city[["partyAcrAT"]][c(1:5, 8)], title="Big6 Grazer Gemeinderatswahl 2012 nach Sprengel", 
         yaxis="Stimmen [%]", legend=T, svg=T, pdf=F, png=T)
 
 # parishes distribution every party itself
@@ -111,7 +111,7 @@ VotesColumnChart(city[["votesPartiesAbs"]],
                  filename=paste0(environment[["folderImagesVotes"]], "barPartiesCityAbs"), 
                  colors=city[["partycolors"]], 
                  names=city[["partyAcrAT"]], 
-                 title="Ergebnis Grazer Gemeinderatswahl 2013", 
+                 title="Ergebnis Grazer Gemeinderatswahl 2012", 
                  yaxis="Stimmen",
                  shift=1000,
                  output=T, png=T, svg=T, pdf=F)
@@ -122,7 +122,7 @@ VotesColumnChart(city[["votesPartiesRel"]],
                  filename=paste0(environment[["folderImagesVotes"]], "barPartiesCityRel"), 
                  colors=city[["partycolors"]], 
                  names=city[["partyAcrAT"]], 
-                 title="Ergebnis Grazer Gemeinderatswahl 2013", 
+                 title="Ergebnis Grazer Gemeinderatswahl 2012", 
                  yaxis="Stimmenanteil [%]",
                  shift=1,
                  output=T, png=T, svg=T, pdf=F)

@@ -22,7 +22,7 @@ sh ./code/shell/build.sh
 ```
 
 ## DOKUMENTATION
-Big 6 werden hier wie folgt die 6 Parteien die es in den Gemeinderat geschafft haben genannt.
+Big 6 werden hier wie folgt die 6 Parteien die es in den Gemeinderat geschafft haben genannt, also SPÖ, ÖVP, FPÖ, Grüne, KPÖ und Piraten.
 
 [Ergebnisse](http://www.graz.at/cms/ziel/4787925/DE/)
 
@@ -36,7 +36,7 @@ Die Vorwahlen sind unter dem Sprengel 816 eingetragen. [1]
 
 Inkonsistenz in Daten: es waren anscheinend um die 8000 vorgezogene Wahlen
 
-#### Parteien
+### Parteien
 PARTEIKÜRZEL, PARTEINAME, RGB-FARBCODE
 - SPÖ: Sozialdemokratische Partei Österreichs, #ce000c, 206   0  12
 - ÖVP: Österreichische Volkspartei
@@ -65,9 +65,12 @@ Die Rohdaten stammen vom [OGD Portal der Stadt Graz](http://data.graz.gv.at/).
 - [GRW2012_Wahlberechtigte.csv](http://data.graz.gv.at/daten/package/wahlberechtigte-personen-gemeinderatswahl-2012)
 
 #### Prozessierte Daten
-Folgende Datensets wurden aus den Rohdaten erzeugt:
+Es wurden einige Datensets aus den Rohdaten erzeugt. Diese sind unter ``./data/csv``, ``./data/rstat`` und ``./data/shape``zu finden.
 
 Nähere Infos zur Datenstruktur sind in ``./doc/grazwahl2012.org`` nachzulesen.
+
+### Templates
+Die Druckzusammenstellung für die Choroplethen Karte in Quantum GIS wurde als Template-File unter ``./data/qgis/graz.qpt`` abgespeichert. Die Vorlage bietet sich auch für andere Kartendarstellung mit Graz als Grundflächean, als jene für die Wahlergebnisse.
 
 ### Diagramme
 Folgende Diagrammtypen wurden aus unterschiedlichen Datensätzen erzeugt und sind im Ordner ``./images`` zu finden.
@@ -77,20 +80,6 @@ Folgende Diagrammtypen wurden aus unterschiedlichen Datensätzen erzeugt und sin
 - Histogramme
 - Dichtefunktionen
 
-### Ordnerstruktur
-- data
-	- raw
-		- shape
-		- csv
-		- twitter
-	- json
-	- rstat
-	- shape
-- doc
-	- licenses: Lizenztexte
-	- pres: Presentationen des Projekts
-- images
-
 ### Qualitätssicherung
 - Parteien sind nach dem Listenplatz in allen Datensätzen geordnet
 
@@ -98,19 +87,22 @@ Folgende Diagrammtypen wurden aus unterschiedlichen Datensätzen erzeugt und sin
 
 ## CHANGELOG
 ### Version 1.0
-- Aufbereitung der Daten für weitere Analysen
-- Berechnen des Korrelationskoeffizienten (Pearson)
-- Erstellen der Dokumentation
+- Säubern und Strukturieren der Rohdaten für weitere Analysen
+- Speichern der prozessierten Daten als CSV und RDA files
+- Berechnen des Korrelationskoeffizienten und visualisieren via Säulendiagramme
+- Erstellen von Diagrammen: Histogramme, Dichtefunktionen, Boxplots, Säulendiagramme
+- Erzeugen von Choroplethen Diagramme in QGIS
 - Shell Scripts 
-	- ``get_twitter_data.sh``: Download der Twitterdaten
-	- ``create_tarball.sh``: Erstellen eines Tar-Balls mit allen Bildern
 	- ``build.sh``: Ausführen aller Scripts und neu generieren des gesamten Contents
+	- ``create_tarball.sh``: Erstellen eines Tar-Balls mit allen Bildern
+	- ``get_twitter_data.sh``: Download der Twitterdaten
 - R Scripts
 	- ``prepData.R``: Daten aufbereiten
 	- ``functions.R``: Funktionen
 	- ``visualize.R``: Erzeugen der Diagramme
 	- ``spatial.R``: Daten vorbereiten für Choroplethen Diagramme
 - Präsentation bei [3. offenen Grazer OGD Stammtisch](http://data.graz.gv.at/aktuelles/openness-fuer-die-grazer-stadtverwaltung-dritter-offener-open-government-data-stammtisch)
+- Erstellen der Dokumentation
 
 ## QUELLEN
 [1]: http://www.graz.at/cms/beitrag/10203278/4829113/

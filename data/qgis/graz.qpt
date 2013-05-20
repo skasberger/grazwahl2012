@@ -1,0 +1,195 @@
+<Composer title="Druckzusammenstellung 20" visible="1">
+ <ComposerLabel valign="32" labelText="Beschreibung:" halign="1" margin="1">
+  <LabelFont description="Ubuntu,12,-1,5,75,0,1,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="30.69" x="73" y="226.878" rotation="0" height="7.3656" frame="false" outlineWidth="0" zValue="22" lastValidViewScaleFactor="3.25839" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerLegend symbolWidth="11" title="Legende" boxSpace="4" titleFont="Ubuntu,16,-1,5,75,0,1,0,0,0" map="0" groupFont="Ubuntu,14,-1,5,50,0,0,0,0,0" layerFont="Ubuntu,12,-1,5,50,0,0,0,0,0" groupSpace="2" symbolSpace="2" symbolHeight="5" layerSpace="2" iconLabelSpace="3" wrapChar="" itemFont="Ubuntu,12,-1,5,50,0,0,0,0,0">
+  <Model autoUpdate="1">
+   <LayerItem layerId="bezirksgrenzen20130520153853210" text="Stimmenanteil [%]">
+    <VectorClassificationItemNg text="Q1: 9.11 - 10.81">
+     <symbols>
+      <symbol outputUnit="MM" alpha="1" type="fill" name="classificationSymbol">
+       <layer pass="0" class="SimpleFill" locked="0">
+        <prop k="color" v="255,255,255,255"/>
+        <prop k="color_border" v="0,0,0,255"/>
+        <prop k="offset" v="0,0"/>
+        <prop k="style" v="solid"/>
+        <prop k="style_border" v="solid"/>
+        <prop k="width_border" v="0.7"/>
+       </layer>
+      </symbol>
+     </symbols>
+    </VectorClassificationItemNg>
+    <VectorClassificationItemNg text="Q2: 10.81 - 12.49">
+     <symbols>
+      <symbol outputUnit="MM" alpha="1" type="fill" name="classificationSymbol">
+       <layer pass="0" class="SimpleFill" locked="0">
+        <prop k="color" v="194,207,226,255"/>
+        <prop k="color_border" v="0,0,0,255"/>
+        <prop k="offset" v="0,0"/>
+        <prop k="style" v="solid"/>
+        <prop k="style_border" v="solid"/>
+        <prop k="width_border" v="0.7"/>
+       </layer>
+      </symbol>
+     </symbols>
+    </VectorClassificationItemNg>
+    <VectorClassificationItemNg text="Q3: 12.49 - 15.92">
+     <symbols>
+      <symbol outputUnit="MM" alpha="1" type="fill" name="classificationSymbol">
+       <layer pass="0" class="SimpleFill" locked="0">
+        <prop k="color" v="134,160,198,255"/>
+        <prop k="color_border" v="0,0,0,255"/>
+        <prop k="offset" v="0,0"/>
+        <prop k="style" v="solid"/>
+        <prop k="style_border" v="solid"/>
+        <prop k="width_border" v="0.7"/>
+       </layer>
+      </symbol>
+     </symbols>
+    </VectorClassificationItemNg>
+    <VectorClassificationItemNg text="Q4: 15.92 - 17.98">
+     <symbols>
+      <symbol outputUnit="MM" alpha="1" type="fill" name="classificationSymbol">
+       <layer pass="0" class="SimpleFill" locked="0">
+        <prop k="color" v="74,113,170,255"/>
+        <prop k="color_border" v="0,0,0,255"/>
+        <prop k="offset" v="0,0"/>
+        <prop k="style" v="solid"/>
+        <prop k="style_border" v="solid"/>
+        <prop k="width_border" v="0.7"/>
+       </layer>
+      </symbol>
+     </symbols>
+    </VectorClassificationItemNg>
+    <VectorClassificationItemNg text="Q5: 17.98 - 20.99">
+     <symbols>
+      <symbol outputUnit="MM" alpha="1" type="fill" name="classificationSymbol">
+       <layer pass="0" class="SimpleFill" locked="0">
+        <prop k="color" v="14,66,142,255"/>
+        <prop k="color_border" v="0,0,0,255"/>
+        <prop k="offset" v="0,0"/>
+        <prop k="style" v="solid"/>
+        <prop k="style_border" v="solid"/>
+        <prop k="width_border" v="0.7"/>
+       </layer>
+      </symbol>
+     </symbols>
+    </VectorClassificationItemNg>
+   </LayerItem>
+  </Model>
+  <ComposerItem width="59.8293" x="7.5" y="224.7" rotation="0" height="64.8" frame="true" outlineWidth="1" zValue="7" lastValidViewScaleFactor="3.25839" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="255" green="170"/>
+   <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLegend>
+ <ComposerLabel valign="32" labelText="Datenquelle:" halign="1" margin="1">
+  <LabelFont description="Ubuntu,12,-1,5,75,0,1,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="52.7549" x="145.523" y="256" rotation="0" height="8.52449" frame="false" outlineWidth="0" zValue="24" lastValidViewScaleFactor="3.31208" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerLabel valign="32" labelText="Stefan Kasberger, 2013" halign="1" margin="1">
+  <LabelFont description="Ubuntu,12,-1,5,50,0,0,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="70.4706" x="73" y="261.6" rotation="0" height="6.9" frame="false" outlineWidth="0" zValue="14" lastValidViewScaleFactor="3.31208" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerLabel valign="32" labelText="Stimmenanteile des Wahltages je Bezirk" halign="1" margin="1">
+  <LabelFont description="Ubuntu,14,-1,5,50,0,0,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="131.13" x="6.85005" y="27.8906" rotation="0" height="8.64233" frame="false" outlineWidth="0" zValue="15" lastValidViewScaleFactor="3.31208" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerLabel valign="32" labelText="Stadt Graz - data.graz.gv.at" halign="1" margin="1">
+  <LabelFont description="Ubuntu,12,-1,5,50,0,0,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="56.0463" x="145.523" y="261.6" rotation="0" height="6.9" frame="false" outlineWidth="0" zValue="16" lastValidViewScaleFactor="3.31208" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerScaleBar segmentMillimeters="11.7647" numMapUnitsPerScaleBarUnit="1" numSegments="2" height="3" alignment="0" labelBarSpace="2" outlineWidth="1" numSegmentsLeft="0" style="Single Box" unitLabel="m" font="Ubuntu,12,-1,5,75,1,0,0,0,0" mapId="0" boxContentSpace="2" numUnitsPerSegment="1000">
+  <BrushColor red="0" blue="0" green="0"/>
+  <ComposerItem width="40.0294" x="9.75992" y="204.936" rotation="0" height="13" frame="false" outlineWidth="0" zValue="9" lastValidViewScaleFactor="3.25839" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerScaleBar>
+ <ComposerShape shapeType="1" shapeWidth="131.299" outlineWidth="0" transparentFill="1" shapeHeight="64.8">
+  <OutlineColor alpha="255" red="0" blue="255" green="170"/>
+  <FillColor alpha="255" red="0" blue="0" green="0"/>
+  <ComposerItem width="131.299" x="71.2008" y="224.7" rotation="0" height="64.8" frame="true" outlineWidth="1" zValue="1" lastValidViewScaleFactor="3.25839" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="255" green="170"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerShape>
+ <ComposerPicture pictureWidth="30.3154" file="/myData/mediadesign/raw/Cretive Commons/medium/88x31.png" pictureHeight="10.9013" mapId="-1">
+  <ComposerItem width="30.3154" x="167.553" y="274.114" rotation="0" height="10.9013" frame="true" outlineWidth="0.3" zValue="10" lastValidViewScaleFactor="3.25839" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerPicture>
+ <ComposerLabel valign="32" labelText="Wahlergebnis FPÖ Grazer Gemeinderatswahl 2012" halign="1" margin="2">
+  <LabelFont description="Ubuntu,24,-1,5,75,0,0,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="197.054" x="5.5" y="6.72838" rotation="0" height="34.0893" frame="false" outlineWidth="0.3" zValue="4" lastValidViewScaleFactor="3.31208" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerLabel valign="32" labelText="Die Karte stellt die relativen Stimmenanteile der Freiheitlichen Partei Österreichs (FPÖ) bei den Grazer Gemeinderatswahlen 2012 in den 17 Bezirken vom Wahltag dar. Die Klassifikation erfolgte in 5 Quantilen." halign="1" margin="1">
+  <LabelFont description="Ubuntu,12,-1,5,50,0,0,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="125.365" x="73" y="232.937" rotation="0" height="24.3031" frame="false" outlineWidth="0" zValue="20" lastValidViewScaleFactor="3.31208" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerLabel valign="32" labelText="Urheber:" halign="1" margin="1">
+  <LabelFont description="Ubuntu,12,-1,5,75,0,1,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="55.4325" x="73" y="256" rotation="0" height="7.3656" frame="false" outlineWidth="0" zValue="23" lastValidViewScaleFactor="3.31208" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerLabel valign="32" labelText="Creative Commons by&#xa;https://creativecommons.org/licenses/by/3.0/" halign="1" margin="1">
+  <LabelFont description="Ubuntu,12,-1,5,50,0,0,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="92.4619" x="73" y="274.361" rotation="0" height="13.9451" frame="false" outlineWidth="0" zValue="17" lastValidViewScaleFactor="3.25839" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerLabel valign="32" labelText="Lizenz:" halign="1" margin="1">
+  <LabelFont description="Ubuntu,12,-1,5,75,0,1,0,0,0"/>
+  <FontColor red="0" blue="0" green="0"/>
+  <ComposerItem width="16.5726" x="73" y="269.21" rotation="0" height="7.6725" frame="false" outlineWidth="0" zValue="26" lastValidViewScaleFactor="3.25839" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="0" green="0"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerLabel>
+ <ComposerMap keepLayerSet="false" id="0" previewMode="Render" drawCanvasItems="true">
+  <Extent ymin="207466" xmin="-76177.6" ymax="222816" xmax="-59602.6"/>
+  <LayerSet/>
+  <Grid gridStyle="0" crossLength="3" penColorRed="0" penColorBlue="0" intervalX="0" offsetX="0" intervalY="0" offsetY="0" show="0" penWidth="0" penColorGreen="0">
+   <Annotation direction="0" precision="3" position="1" frameDistance="1" show="0" font="Ubuntu,11,-1,5,50,0,0,0,0,0"/>
+  </Grid>
+  <ComposerItem width="195" x="7.5" y="40.2142" rotation="0" height="180.587" frame="true" outlineWidth="1" zValue="3" lastValidViewScaleFactor="3.25839" id="" positionLock="false">
+   <FrameColor alpha="255" red="0" blue="255" green="170"/>
+   <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+  </ComposerItem>
+ </ComposerMap>
+ <Composition printResolution="300" paperWidth="210" snapGridOffsetX="0" snapGridResolution="0" snapGridOffsetY="0" snapping="0" paperHeight="297" printAsRaster="0"/>
+</Composer>
